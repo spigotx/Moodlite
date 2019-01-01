@@ -10,4 +10,4 @@ http://moodlite.co.uk
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU V3 License - see the [LICENSE.md](LICENSE.md) file for details
