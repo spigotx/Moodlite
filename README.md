@@ -4,6 +4,7 @@
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
+- [Usage](#usage)
 - [Coding Standards and Naming Conventions](#coding-standards-and-naming-conventions)
 - [Credits](#credits)
 - [Change log](#change-log)
@@ -12,7 +13,7 @@
 - [Support us](#support-us)
 - [Links](#links)
 
-### Prerequisites
+## Prerequisites
 
 ```
 Arduino based on ESP8266 
@@ -20,13 +21,25 @@ Arduino IDE (1.8.8 and higher)
 Arduino libraries
 ```
 
-### Coding Standards and Naming Conventions
+## Usage
+### Timezone
+For your time zone, you need to modify Timezone part of the code. [See](https://github.com/JChristensen/Timezone) for details.
+```
+// Central European Time (Frankfurt, Paris)
+// Central European Summer Time
+TimeChangeRule tchrCest = { "CEST", Last, Sun, Mar, 2, 120 };
+// Central European Standard Time
+TimeChangeRule tchrCet = { "CET", Last, Sun, Oct, 3, 60 };
+```
+
+## Coding Standards and Naming Conventions
 Base rules are described in [naming conventions file](Arduino/Naming_convention.txt)
 	
 ## Credits
 This software uses the following open source packages:
 * [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - Async HTTP and WebSocket Server for ESP8266 Arduino
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - Async TCP Library for ESP8266 Arduino
+* [Timezone](https://github.com/JChristensen/Timezone  ) - Arduino Timezone Library
 
 ## Change log
 
