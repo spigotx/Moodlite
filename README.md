@@ -32,6 +32,7 @@ This software uses the following open source packages:
 * [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - Async HTTP and WebSocket Server for ESP8266 Arduino
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - Async TCP Library for ESP8266 Arduino
 * [Timezone](https://github.com/JChristensen/Timezone  ) - Arduino Timezone Library
+* [Timer](https://github.com/JChristensen/Timer/tree/v2.1  ) - Arduino Timer Library
 
 ## Change log
 
