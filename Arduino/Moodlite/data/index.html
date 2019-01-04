@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+        <title>Moodlite</title>
+		<!- Favicon ->
+		<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    	<!- JS ->
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.js"></script>
+      	<!- Color picker ->
+		<script type="text/javascript" src="js/colorpicker.js"></script>
+    
+    	<!- CSS ->
+		<link href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css" rel="stylesheet">                                    
+		<!- Color picker ->
+        <link href="css/colorpicker.css" rel="stylesheet" type="text/css">
+	
+		<style type="text/css">
+			.dispInline, .dispInlineLabel{
+				display: inline-block;
+				border-bottom-width:0;
+			}
+			.dispInlineLabel{
+				min-width: 340px;
+				vertical-align: middle;
+			}
+			.dispInline{
+				min-width: 150px;
+				vertical-align: middle;
+			}
+			.clearFloats{
+				clear:both;
+			}
+
+			/* Style override */      
+			/* Main module */      
+			.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit {
+				background-color: #333333;
+				color: #d0d0d0;
+				text-shadow: 0 1px 0 #333333;
+			}
+
+			/* Sheet button */
+			.ui-header .ui-title ~ .ui-navbar .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-btn, .ui-header .ui-navbar .ui-grid-duo .ui-btn, .ui-footer .ui-navbar .ui-grid-duo .ui-btn, .ui-header .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child .ui-btn, .ui-header .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child + .ui-block-b .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child + .ui-block-b .ui-btn {
+				border-color: #ddd;
+			}
+
+			.ui-header .ui-title, .ui-footer .ui-title {
+				font-size: 1.5em;
+			}
+
+			/* Sheet */      
+			.ui-page-theme-a .ui-btn.ui-btn-active {
+				  background: #333333;
+			}
+			/* Flip switch */
+			.ui-flipswitch {
+				
+			}	
+				
+			/* Slider Input */
+			input.ui-slider-input {
+				width: 45px;
+			}
+
+			/*
+			// Input text
+			.ui-field-contain {
+				width: 50%;			
+			}
+			*/
+
+			/* Settings */
+			.rs-control .rs-range-color {	
+				background: #333333; 
+			}  
+
+			.rs-control .rs-path-color {
+				background-color: #e9e9e9;
+			}
+
+			.rs-control .rs-handle {
+				background-color: #f6f6f6;
+				border: 2px solid #d0d0d0;   
+			}
+
+			.rs-tooltip-text {
+				font-size: 16px;
+			}
+
+			.rs-tooltip.hover {
+				background-color: #e9e9e9;
+			}
+  				
+			div.line{
+				transform-origin: 0 100%;
+				height: 1px; /* Line width of 3 */
+				background: #000; /* Black fill */
+			}
+
+			#text_head1 {
+				//color: green;
+				font-size: 20px;
+				font-weight: bold;
+			}
+			#text_head2 {
+				//color: green;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			
+		   footer {
+                position: relative;
+                height: 40px;
+                width: 100%;
+                background-color: #333333;
+            }
+        
+            p.copyright {
+                position: absolute;
+                width: 100%;
+                color: #fff;
+                line-height: 10px;
+                font-size: 0.7em;
+                text-align: center;
+                bottom:0;
+            }
+		</style>
+		<script>
+			var serverSetting = false;
+			
+			function updateElements(values) {
+				serverSetting = true;
+				
+				var displayOn = values["display_on"];
+				
+				if (typeof displayOn != 'undefined') {
+					$('#aut_display_on').roundSlider("setValue", displayOn, 1);
+					delete values["display_on"];
+				}
+				
+				var displayOff = values["display_off"];
+				
+				if (typeof displayOff != 'undefined') {
+					$('#aut_display_on').roundSlider("setValue", displayOff, 2);
+					delete values["display_off"];
+				}
+		 
+				Object.keys(values).forEach(function(key, index) {
+					var element = $('#' + key);
+					var elType = element.attr('type');
+					
+					if (elType == "checkbox") {
+						element.prop("checked", this[key]);
+						element.flipswitch("refresh");
+					} 
+					else {
+						if (key == "cycle_time") {
+							element.val(this[key] * 6);
+						} else {
+							element.val(this[key]);
+						}
+						if (elType == "number") {
+							element.slider("refresh");					
+						}
+					}
+				}, values);
+				serverSetting = false;
+			}
+			
+			function updateStatus(msg) {
+				//var oldMsg = $("#status").text()
+				//var newMsg = oldMsg + msg
+				$("#status").html(msg.replace(/\r\n/g, '<br />'))		
+				//$("#status").html($("#status").text() + msg.replace(/_rn_/g, '<br>'));
+			}
+			
+			function url(s) {
+				var l = window.location;
+				return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + s;
+			}
+
+			function getElementValue(element) {
+				element = $(element);
+				var elType = element.attr('type');
+				if (elType == "checkbox") {
+					return element.prop("checked");
+				} else {
+					return element.val();
+				}
+			}
+			
+			function elementBlur(element) {
+				if (serverSetting) {
+					return;
+				}
+				var value = getElementValue(element);
+				if (element.id == "cycle_time") {
+					value = value / 6;
+				}
+				var msg = '5:' + element.id + ':'+ value;
+				sendMsg(msg);
+			}
+			
+			function elementChange(element) {
+				if (serverSetting) {
+					return;
+				}
+				var value = getElementValue(element);
+				if (element.id == "cycle_time") {
+					value = value / 6;
+				}
+				
+				var msg = '5:' + element.id + ':'+ value;
+				sendMsg(msg);
+			}
+			
+			function pageRefresh(activePage){
+				switch (activePage) {
+					case 'wifi': 
+						sendMsg('1:'); 
+						break;
+					case 'settings': 
+						sendMsg('2:'); 
+						$('#ntp_server').attr('size','10');
+						$('#led_strip_nr_of_leds').attr('size','1');						
+						break;
+					case 'leds': 
+						sendMsg('3:'); 						
+						// Enable/Disable sliders according LED params modif. checkbox
+						// If LED params modif. are enabled enable sliders
+						if ($('#allow_led_params_mod').is(':checked')) {
+							$('#led_strip_brightness').slider('enable');
+							$('#led_strip_speed').slider('enable');
+							$('#colorpickerfield_led_strip').prop('disabled', false);					
+						} 
+						// If LED params modif. aren't enabled enable sliders					
+						else {
+							$('#led_strip_brightness').slider('disable');	
+							$('#led_strip_speed').slider('disable');	
+							$('#colorpickerfield_led_strip').prop('disabled', true);			
+						}							
+						break;	
+				}				
+			} ;
+			
+			var ws;
+
+			ws = new WebSocket(url("/ws"));
+			
+			// subscribe to visibility change events
+			document.addEventListener('visibilitychange', function() {
+				// fires when app transitions from prerender, user returns to the app / tab.
+				if (document.visibilityState == 'visible') { 
+					if (!ws || !(ws.readyState == WebSocket.OPEN || ws.readyState == WebSocket.CONNECTING)) {
+						ws = new WebSocket(url("/ws"));
+					}
+				}
+			});
+			
+			ws.onopen = function(event) {
+				try {
+					pageRefresh($(".ui-page-active").attr("id"));
+				} catch (e) {			
+					(console.error || console.log).call(console, e.stack || e);
+				}
+			}
+			
+			ws.onmessage= function(event) {
+			  var msg = JSON.parse(event.data);
+			  
+			  switch(msg.type) {
+				case "sv.update":
+				case "sv.init.wifi":		// Received initialization object
+				case "sv.init.settings":	// Received initialization object
+				case "sv.init.leds":		// Received initialization object	   
+					updateElements(msg.value);
+					break;						
+				case "sv.status":			// Received initialization object	
+					updateStatus(msg.value);
+					break;
+			  }
+			};
+
+			function sendMsg(msg) {
+				console.log(msg);
+				try {
+					ws.send(msg);
+				} catch (e) {
+					console.log(e.stack || e);
+				}
+			}
+			
+			function createLine(x1,y1, x2,y2){
+				var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+				var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+				var transform = 'rotate('+angle+'deg)';
+
+				var line = $('<div>')
+					.appendTo('#page')
+					.addClass('line')
+					.css({
+						'position': 'absolute',
+						'transform': transform
+					})
+					.width(length)
+					.offset({left: x1, top: y1});
+
+				return line;
+			}
+			
+			// On page load
+			$(document).ready(function () {
+				$(document).on('pagecontainerbeforechange', function(event, ui) {
+					$.fn.roundSlider.prototype._invertRange = true;
+					$('#aut_display_on').roundSlider({
+						  sliderType: "range",
+						  //showTooltip: false,
+						  radius: 60,
+						  width: 20,
+						  min: 0,
+						  max: 24,
+						  step: 1,
+						  value: "8,22",
+						  startAngle: 0,
+						  endAngle: "+360",
+						  handleSize: "+8",
+						  
+						  change: function(e) {
+							if (serverSetting) {
+								return;
+							}
+							
+							var values = e.value.split(',');
+							var msg = '5:display_on:'+ values[0];
+							sendMsg(msg);
+							msg = '5:display_off:'+ values[1];
+							sendMsg(msg);
+						  }
+						});
+					
+					// Set NTP server button
+					$('#btnNtpServer').click(function(){
+						var value = $('#ntp_server').val();
+						var msg = '5:setNtpServer:' + value;
+						sendMsg(msg);
+						// Reload page after 8s
+						setTimeout(function() {
+                            location.reload();
+                        }, 8000)
+					}); 
+					
+					// Set nr. of LEDs button
+					$('#btnNrOfLeds').click(function(){
+						var value = $('#led_strip_nr_of_leds').val();
+						var msg = '5:setNrOfLeds:' + value;
+						sendMsg(msg);
+						// Reload page after 8s
+						setTimeout(function() {
+                            location.reload();
+                        }, 8000)
+					}); 
+					pageRefresh(ui.toPage[0].id);	
+				});		
+				
+				$('#led_strip_nr_of_leds').attr('size','1');
+				
+				// Enable/Disable sliders according LED params modif. checkbox
+				$('#allow_led_params_mod').change(function(){
+					if ($(this).is(':checked')) {
+						$('#led_strip_brightness').slider('enable');					
+						$('#led_strip_speed').slider('enable');					
+						$('#colorpickerfield_led_strip').prop('disabled', false);				
+					} else {
+						$('#led_strip_brightness').slider('disable');	
+						$('#led_strip_speed').slider('disable');
+						$('#colorpickerfield_led_strip').prop('disabled', true);	
+					}
+				});	
+
+				// Show hostname as H1 text
+				// At first load, show default text 'Moodlite'
+				//$("#toptitle_led").text($('#hostname').val());	
+				//$("#toptitle_settings").text($('#hostname').val());	
+				//$("#toptitle_wifi").text($('#hostname').val());	
+				
+				// Color pickers
+				// LEDs
+				$('#colorpickerfield_led_strip').ColorPicker({
+					onSubmit: function(hsb, hex, rgb, el, parent) {
+						$(el).val(hex);
+						$(el).ColorPickerHide();
+						elementChange(el);						
+					},
+					onBeforeShow: function () {
+						$(this).ColorPickerSetColor(this.value);
+					}
+				})
+				.on('keyup', function(){
+					$(this).ColorPickerSetColor(this.value);
+				});	
+
+				// Pattern buttons
+				$('#btnPtn0').click(function(){
+					var msg = '5:pattern:0';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn1').click(function(){
+					var msg = '5:pattern:1';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn2').click(function(){
+					var msg = '5:pattern:2';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn3').click(function(){
+					var msg = '5:pattern:3';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn4').click(function(){
+					var msg = '5:pattern:4';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn5').click(function(){
+					var msg = '5:pattern:5';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn6').click(function(){
+					var msg = '5:pattern:6';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn7').click(function(){
+					var msg = '5:pattern:7';
+					sendMsg(msg);
+				}); 
+				$('#btnPtn8').click(function(){
+					var msg = '5:pattern:8';
+					sendMsg(msg);
+				}); 			
+			});
+		
+			// Data
+			var wifiData = {
+				type: "sv.init.wifi",
+				value: {
+					ssid: "ssid",
+					password: "password",
+					hostname: "hostname"
+				}
+			};
+			
+			var statusData = {
+					type: "sv.status",
+					value: "What's going on?"
+			};
+			
+			var settingsData = {
+					type: "sv.init.settings",
+					value: {
+						aut_display_enabled: true,
+						display_on: 5,
+						display_off: 22,
+						ntp_server: c,						
+						led_strip_nr_of_leds: 3
+					}
+				};
+				
+			var ledsData = {
+					type: "sv.init.leds",
+					value: {
+						backlight: false,
+						allow_led_params_mod: false,
+						colorpickerfield_led_strip: "00ff00",												
+						led_strip_brightness: 15,
+						led_strip_speed: 20
+					}
+				};
+				
+			var sensorData = {
+					type: "sv.init.sensor",
+					value: {
+
+					}
+				};				
+		</script>
+	</head>
+	<body>
+		<div data-role="page" id="leds">
+			<div data-role="header">
+				<h1 id="toptitle_led">Moodlite</h1>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a class="ui-btn-active ui-state-persist">LEDs</a>
+						</li>		
+						<li>
+							<a href="#settings">Settings</a>
+						</li>
+						<li>
+							<a href="#wifi">WiFi</a>
+						</li>		
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<form id="set_leds" action="/set_leds" method="POST" id="leds_form">
+					<div data-role="fieldcontain">
+						<label for="text_head1" id="text_head1">Properties</label>
+					</div>	                
+					<div class="dispInlineLabel">
+							<label for="backlight">Backlight</label>
+					</div>
+					<div class="dispInline">
+							<input onchange="elementChange(this)" type="checkbox"
+							data-role="flipswitch" name="backlight" id="backlight"
+							data-on-text="On" 
+							data-off-text="Off"
+							data-wrapper-class="custom-label-flipswitch">
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+							<label for="allow_led_params_mod">Allow modifications</label>
+					</div>
+					<div class="dispInline">
+							<input onchange="elementChange(this)" type="checkbox"
+							data-role="flipswitch" name="allow_led_params_mod" id="allow_led_params_mod"
+							data-on-text="On" 
+							data-off-text="Off"
+							data-wrapper-class="custom-label-flipswitch">
+					</div>
+					<div class="clearFloats"></div>
+					<div data-role="fieldcontain">
+						<label for="led_strip_brightness">Brightness</label>
+						<input onchange="elementChange(this)" type="range" name="led_strip_brightness" id="led_strip_brightness" min="0" max="255" value="15" step="20">
+					</div>	
+					<div class="clearFloats"></div>	
+					<div data-role="fieldcontain">
+						<label for="led_strip_speed">Speed</label>
+						<input onchange="elementChange(this)" type="range" name="led_strip_speed" id="led_strip_speed" min="1" max="250" value="20" step="10">
+					</div>	
+                    <div class="clearFloats"></div>					
+					<div data-role="fieldcontain">
+						<label for="colorpickerfield_led_strip">LED Color</label>						
+                    	<input type="text" maxlength="6" size="6" name="colorpickerfield_led_strip" id="colorpickerfield_led_strip" value="00ff00">	
+					</div>        					
+			    	<div class="line"></div>		
+					<div data-role="fieldcontain">
+						<label for="text_head1" id="text_head1">Pattern</label>
+					</div>	
+					<div class="clearFloats"></div>	
+					<div data-role="fieldcontain">
+    					<input id="btnPtn0" type="button" data-inline="true" value="P0">
+    					<input id="btnPtn1" type="button" data-inline="true" value="P1">
+    					<input id="btnPtn2" type="button" data-inline="true" value="P2">
+    					<input id="btnPtn3" type="button" data-inline="true" value="P3">
+    					<input id="btnPtn4" type="button" data-inline="true" value="P4">
+    					<input id="btnPtn5" type="button" data-inline="true" value="P5">
+    					<input id="btnPtn6" type="button" data-inline="true" value="P6">
+    					<input id="btnPtn7" type="button" data-inline="true" value="P7">
+    					<input id="btnPtn8" type="button" data-inline="true" value="P8">
+ 					</div>
+				</form> 					
+			</div>
+			<footer>
+                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
+            </footer>
+		</div>	
+
+		<div data-role="page" id="settings">
+			<div data-role="header">
+				<h1 id="toptitle_settings">Moodlite</h1>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a href="#leds">LEDs</a>
+						</li>	
+						<li>
+							<a class="ui-btn-active ui-state-persist">Settings</a>
+						</li>
+						<li>
+							<a href="#wifi">WiFi</a>
+						</li>				
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<form action="/set_moodlite" method="POST" id="settings_form">
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+						<label for="aut_display_enabled">Display On Enabled</label>
+					</div>
+					<div class="dispInline" >
+						<input onchange="elementChange(this)" type="checkbox" 
+						    data-role="flipswitch" name="aut_display_enabled" id="aut_display_enabled" 
+						    data-on-text="On" 
+						    data-off-text="Off" 
+						    data-wrapper-class="custom-label-flipswitch"
+						>
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="aut_display_on">Display On</label>
+					</div>
+					<div class="dispInline" >
+						<div id="aut_display_on">
+						</div>
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="ntp_server">NTP server</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="ntp_server" id="ntp_server" minlength="1" maxlength="93" size="100">
+						<input id="btnNtpServer" type="button" data-inline="true" value="Set">
+					</div>			
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="led_strip_nr_of_leds">Nr. of LEDs</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="led_strip_nr_of_leds" id="led_strip_nr_of_leds" minlength="1" maxlength="3" size="4">
+						<input id="btnNrOfLeds" type="button" data-inline="true" value="Set">
+					</div>
+				</form>						
+			</div>  
+			<footer>
+                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
+            </footer>			
+		</div>
+		
+		<div data-role="page" id="wifi">
+			<div data-role="header">
+				<h1 id="toptitle_wifi">Moodlite</h1>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a href="#leds">LEDs</a>
+						</li>					
+						<li>
+							<a href="#settings">Settings</a>
+						</li>
+						<li>
+							<a class="ui-btn-active ui-state-persist">WiFi</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="content">
+				<form action="/set_wifi" method="POST" id="wifi_form">
+					<div data-role="fieldcontain">
+						<label for="ssid">SSID</label>
+						<input type="text" name="ssid" id="ssid" maxlength="20">
+					</div>
+					<div data-role="fieldcontain">
+						<label for="password">Password</label>
+						<input type="password" name="password" id="password" maxlength="40">
+					</div>
+					<div data-role="fieldcontain">
+						<label for="hostname">Hostname</label>
+						<input type="text" name="hostname" id="hostname" maxlength="50">
+					</div>
+					<div data-role="fieldcontain">
+						<label for="wifi_set">&nbsp;</label>
+						<button type="submit" id="wifi_set" class="ui-btn ui-btn-inline">Set</button>
+					</div>
+				</form>
+			</div>
+			<div id="status" data-role="footer">Status</div>	
+			<footer>
+                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
+            </footer>			
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,105 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-image: url('../images/pattern.png');
+	font-family: Calibri, Verdana, Ariel, sans-serif; 
+}
+#wrapper {
+	width: 900px;
+	margin: 0 auto;
+	padding: 20px 0;
+
+}
+#wrapper > h1 {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 3em;
+	margin: 0px 0px 15px 0px;
+	padding: 0;
+	font-family: 'Lilita One', cursive;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow:
+    1px 1px 0 #dd0000,
+    2px 2px 0 #dd0000,
+    3px 3px 0 #dd0000,
+    4px 4px 0 #fe6230,
+    6px 5px 0 #fe6230,
+    7px 7px 0 #fe6230,
+    8px 8px 0 #fef600,
+    9px 9px 0 #fef600,
+    10px 10px 0 #fef600,
+    11px 11px 0 #00bc00,
+    12px 12px 0 #00bc00,
+    13px 13px 0 #00bc00,
+    14px 14px 0 #009bfe,
+    15px 15px 0 #009bfe,
+    16px 16px 0 #009bfe,
+    17px 17px 0 #000083,
+    18px 18px 0 #000083,
+    19px 19px 0 #000083,
+    20px 20px 0 #30009b,
+    21px 21px 0 #30009b,
+    22px 22px 0 #30009b;
+}
+#wrapper > article {
+    width: 700px;
+    background: #fbfbfb;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2em 1.5em;
+    color: rgba(0,0,0, .8);
+    text-shadow: 0 1px 0 #fff;
+    line-height: 1.5;
+    margin: 60px auto;
+    -webkit-box-shadow: 0 15px 10px rgba(0,0,0, .7);
+    -moz-box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+}
+#colorselector {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 36px;
+	height: 36px;
+	background: url(../images/select2.png);
+}
+#colorselector div {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: url(../images/select2.png) center;
+}
+#colorpickerholder2 {
+	top: 32px;
+	left: 0;
+	width: 356px;
+	height: 0;
+	overflow: hidden;
+	position: absolute;
+}
+#colorpickerholder2 .colorpicker input {
+	color: #778398;
+}
+#customWidget {
+	position: relative;
+	height: 36px;
+}
+
+#colorselector2 {
+	position: relative;
+	width: 36px;
+	height: 36px;
+	background: url(../images/select.png);
+}
+#colorselector2 div {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 30px;
+	height: 30px;
+	background: url(../images/select.png) center;
+}
