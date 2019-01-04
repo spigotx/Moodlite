@@ -51,7 +51,7 @@ This software uses the following open source packages:
 
 ## Change log
 
-See the [CHANGELOG](CHANGELOG) file for details.
+See the [CHANGELOG.md](CHANGELOG.md) file for details.
 
 ## Authors
 
