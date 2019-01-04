@@ -22,23 +22,7 @@ Arduino libraries
 ```
 
 ## Usage
-### Timezone
-For your time zone, you need to modify Timezone part of the code. [See](https://github.com/JChristensen/Timezone) for details.
-```
-// Central European Time (Frankfurt, Paris)
-// Central European Summer Time
-TimeChangeRule tchrCest = { "CEST", Last, Sun, Mar, 2, 120 };
-// Central European Standard Time
-TimeChangeRule tchrCet = { "CET", Last, Sun, Oct, 3, 60 };
-```
-### SPIFFS
-#### Install SPIFFS
-To install SPIFFS support follow [procedure](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#uploading-files-to-file-system)
-#### Upload SPIFFS data
-To upload SPIFFS data to Arduino you need to have "data" folder in the same folder as "Moodlite.ino" file.
-Then follow the same procedure as shown in the picture:
-
-![alt text](_files/SPIFFS.png)
+For more information visit [wiki](https://github.com/spigotx/Moodlite/wiki).
 
 ## Coding Standards and Naming Conventions
 Base rules are described in [naming conventions file](Arduino/Naming_convention.txt)
