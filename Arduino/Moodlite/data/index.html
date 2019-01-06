@@ -226,7 +226,7 @@
 						break;
 					case 'settings': 
 						sendMsg('2:'); 
-						$('#ntp_server').attr('size','10');
+						$('#ntp_server').attr('size','20');
 						$('#led_strip_nr_of_leds').attr('size','1');						
 						break;
 					case 'leds': 
@@ -353,8 +353,19 @@
                             location.reload();
                         }, 8000)
 					}); 
+
+					// Set  nr. of LEDs per corner button
+					$('#btnNrOfLedsCorner').click(function(){
+						var value = $('#led_strip_nr_of_leds_corner').val();
+						var msg = '5:setNrOfLedsCorner:' + value;
+						sendMsg(msg);
+						// Reload page after 8s
+						setTimeout(function() {
+                            location.reload();
+                        }, 8000)
+					}); 
 					
-					// Set nr. of LEDs button
+					// Set total nr. of LEDs button
 					$('#btnNrOfLeds').click(function(){
 						var value = $('#led_strip_nr_of_leds').val();
 						var msg = '5:setNrOfLeds:' + value;
@@ -464,7 +475,8 @@
 						aut_display_enabled: true,
 						display_on: 5,
 						display_off: 22,
-						ntp_server: c,						
+						ntp_server: "",						
+						led_strip_nr_of_leds_corner: 3,						
 						led_strip_nr_of_leds: 3
 					}
 				};
@@ -472,7 +484,7 @@
 			var ledsData = {
 					type: "sv.init.leds",
 					value: {
-						backlight: false,
+						backlight: true,
 						allow_led_params_mod: false,
 						colorpickerfield_led_strip: "00ff00",												
 						led_strip_brightness: 15,
@@ -616,10 +628,18 @@
 				    <div class="dispInline" >
 						<input type="text" name="ntp_server" id="ntp_server" minlength="1" maxlength="93" size="100">
 						<input id="btnNtpServer" type="button" data-inline="true" value="Set">
-					</div>			
+					</div>
 					<div class="clearFloats"></div>
 					<div class="dispInlineLabel" >
-						<label for="led_strip_nr_of_leds">Nr. of LEDs</label>		
+						<label for="led_strip_nr_of_leds_corner">Nr. of LEDs/Corner</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="led_strip_nr_of_leds_corner" id="led_strip_nr_of_leds_corner" minlength="1" maxlength="1" size="2">
+						<input id="btnNrOfLedsCorner" type="button" data-inline="true" value="Set">
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="led_strip_nr_of_leds">Total Nr. of LEDs</label>		
 				    </div>   
 				    <div class="dispInline" >
 						<input type="text" name="led_strip_nr_of_leds" id="led_strip_nr_of_leds" minlength="1" maxlength="3" size="4">

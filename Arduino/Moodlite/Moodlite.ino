@@ -4,10 +4,14 @@
 	Version:  1.1
 	AuthorS:  Steve Wagg aka CdRsKuLL, 
 			  Spigot (M.V.)
-	Notes:    Web page: http://moodlite.co.uk
+	License:  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0 as published by the Free Software Foundation. 
+			  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+			  See the GNU General Public License for more details.
+			  You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/gpl.html>
+	Notes:    Wether you use this project, have learned something from it, or just like it, please consider supporting us on our web site. :)
+			  Web page: http://moodlite.co.uk
 			  Go to http://192.168.100.250 in a web browser connected to this access point to see it
 */
-
 
 // --- Libraries ---
 // LED Strip
@@ -46,35 +50,36 @@
 
 // --- Constants ---
 // --- EEPROM data ---
-#define SSID_START				0x0
-#define SSID_MAX				0x20
-#define PASSWORD_START			(SSID_START + SSID_MAX)
-#define PASSWORD_MAX			0x40
-#define URL_START				(PASSWORD_START + PASSWORD_MAX)
-#define URL_MAX					0x50
-#define HOSTNAME_START			(URL_START + URL_MAX)
-#define HOSTNAME_MAX		    0x50
-#define LED_BRIGHTNESS_START    (HOSTNAME_START + HOSTNAME_MAX)
-#define LED_BRIGHTNESS_MAX      0x1
-#define BACKLIGHT_START			(LED_BRIGHTNESS_START + LED_BRIGHTNESS_MAX)
-#define BACKLIGHT_MAX			0x1
-#define LED_COLOR_START			(BACKLIGHT_START + BACKLIGHT_MAX)
-#define LED_COLOR_MAX			0x6
-#define AUTDISPLAYON_START		(LED_COLOR_START + LED_COLOR_MAX)
-#define AUTDISPLAYON_MAX		0x1
-#define DISPLAYON_START			(AUTDISPLAYON_START + AUTDISPLAYON_MAX)
-#define DISPLAYON_MAX			0x1
-#define DISPLAYOFF_START		(DISPLAYON_START + DISPLAYON_MAX)
-#define DISPLAYOFF_MAX			0x1
-#define LED_SPEED_START			(DISPLAYOFF_START + DISPLAYOFF_MAX)
-#define LED_SPEED_MAX			0x1
-#define LED_PATTERN_START		(LED_SPEED_START + LED_SPEED_MAX)
-#define LED_PATTERN_MAX			0x1
-#define NUMBER_OF_LEDS_START	(LED_PATTERN_START + LED_PATTERN_MAX)
-#define NUMBER_OF_LEDS_MAX      0x3
-#define NTP_SERVER_START  		(NUMBER_OF_LEDS_START + NUMBER_OF_LEDS_MAX)
-#define NTP_SERVER_MAX      	0x50
-
+#define SSID_START							0x0
+#define SSID_MAX							0x20
+#define PASSWORD_START						(SSID_START + SSID_MAX)
+#define PASSWORD_MAX						0x40
+#define URL_START							(PASSWORD_START + PASSWORD_MAX)
+#define URL_MAX								0x50
+#define HOSTNAME_START						(URL_START + URL_MAX)
+#define HOSTNAME_MAX						 0x50
+#define LED_BRIGHTNESS_START				(HOSTNAME_START + HOSTNAME_MAX)
+#define LED_BRIGHTNESS_MAX					0x1
+#define BACKLIGHT_START						(LED_BRIGHTNESS_START + LED_BRIGHTNESS_MAX)
+#define BACKLIGHT_MAX						0x1
+#define LED_COLOR_START						(BACKLIGHT_START + BACKLIGHT_MAX)
+#define LED_COLOR_MAX						0x6
+#define AUTDISPLAYON_START					(LED_COLOR_START + LED_COLOR_MAX)
+#define AUTDISPLAYON_MAX					0x1
+#define DISPLAYON_START						(AUTDISPLAYON_START + AUTDISPLAYON_MAX)
+#define DISPLAYON_MAX						0x1
+#define DISPLAYOFF_START					(DISPLAYON_START + DISPLAYON_MAX)
+#define DISPLAYOFF_MAX						0x1
+#define LED_SPEED_START						(DISPLAYOFF_START + DISPLAYOFF_MAX)
+#define LED_SPEED_MAX						0x1
+#define LED_PATTERN_START					(LED_SPEED_START + LED_SPEED_MAX)
+#define LED_PATTERN_MAX						0x1
+#define NUMBER_OF_LEDS_START				(LED_PATTERN_START + LED_PATTERN_MAX)
+#define NUMBER_OF_LEDS_MAX					 0x3
+#define NTP_SERVER_START  					(NUMBER_OF_LEDS_START + NUMBER_OF_LEDS_MAX)
+#define NTP_SERVER_MAX      				0x50
+#define NUMBER_OF_LEDS_CORNER_START  		(NTP_SERVER_START + NTP_SERVER_MAX)
+#define NUMBER_OF_LEDS_CORNER_MAX		 	0x1
 
 // RGB Strip
 #define LED_PIN				 6
@@ -115,23 +120,25 @@ String sWifiPassword = "";
 // 0 - Off (Dark:Black)
 // 128 - Half lit
 // 255 - Fully lit
-byte beLedBrightness = 15;
+byte beLedBrightness;
 byte beLedOldBrightness = 15;
 String sBrightness;
 boolean bBacklight = true;
 boolean bAllowLedParamMod = false;
 String sLedHexColor;
 boolean bAutDisplayEnabled = true;
-byte beDisplayOn   = 5;
-byte beDisplayOff  = 22;
+byte beDisplayOn;
+byte beDisplayOff;
 byte beRedLight = 255;
 byte beGreenLight = 0;
 byte beBlueLight = 0;
 byte beLedSpeed = 10;
 byte beLedOldSpeed;
 byte beLedPattern = 0;
-int iNrOfLeds = 3;
+int iNrOfLeds;
 String sNrOfLeds;
+byte beNrOfLedsCorner;
+String sNrOfLedsCorner;
 
 // NTP server
 // Server name
@@ -406,6 +413,12 @@ void setup() {
 	// --- Initialize serial communication ---
 	Serial.begin(9600);
 
+	// --- Uncomment to reset ---
+	// Erase EEPROM
+	//eraseEEPROM();
+	// Erase SPIFFS
+	//eraseSPIFFS();
+
 	// --- Initialize EEPROM data ----
 	// Load EEPROM data
 	initEEPROMData();
@@ -432,7 +445,7 @@ void setup() {
 		// The nr. means FPS and it sets ms for Fastled
 		// 1000/FPS = ms
 		// 1000/40 = 25ms -> FastLED.Show() than waits 25ms for each LED
-		FastLED.setMaxRefreshRate(40);
+		//FastLED.setMaxRefreshRate(40);
 		FastLED.setBrightness(beLedBrightness);
 
 		// Turn Off all LEDs
@@ -441,24 +454,22 @@ void setup() {
 		// Start LED pattern
 		changeLedPatternParameters(beLedPattern);
 
-    // --- UDP ---
-    udp.begin(NTPLOCALUDPPORT);
+		// --- UDP ---
+		udp.begin(NTPLOCALUDPPORT);
 
-    // If NTP server is defined start checking time
-    if (sNtpServer.length() > 0) {
-      // --- Initialize NTP Server ---
-      checkNtpServer((void *)0);
+		// If NTP server is defined start checking time
+		if (sNtpServer.length() > 0) {
+		  // --- Initialize NTP Server ---
+		  checkNtpServer((void *)0);
   
-      // --- Initialize Timers ---
-      // Check NTP Server - Update actual time
-      trCheckNtpServer.every(TR1H, checkNtpServer, (void*)0);
-    }
+		  // --- Initialize Timers ---
+		  // Check NTP Server - Update actual time
+		  trCheckNtpServer.every(TR1H, checkNtpServer, (void*)0);
+		}
 	}
 
 	// --- Web server ---
 	MDNS.addService("http", "tcp", 80);
-
-	httpClient.initialize(readStringFromEEPROM(URL_START, URL_MAX));
 
 	asyncWebServer.on("/", HTTP_GET, mainHandler);
 	asyncWebServer.on("/system", HTTP_GET, systemHandler);
@@ -479,22 +490,24 @@ void setup() {
 // --- Main loop function ---
 void loop()
 {
-	// Display LED pattern
-	if (checkDisplay() && beLedPattern > 0 && beLedPattern < 99) {
+	// Display LED pattern if: Turn light ON enabled, Nr. of LEDs per corner > 0, LED pattern is set
+	if (checkDisplay() && beNrOfLedsCorner > 0 && beLedPattern != 0 && beLedPattern != 99) {
 		static uint8_t ui8StartIndex = 0;
-		ui8StartIndex = ui8StartIndex + 1; /* motion speed */
-		fillLedsFromPaletteColors( ui8StartIndex);
+		ui8StartIndex += 1; /* motion speed */
+		fillLedsFromPaletteColors(ui8StartIndex);
 		FastLED.show();
 		FastLED.delay(1000 / beLedSpeed);
 	}
 
-  trCheckNtpServer.update();
+	// If NTP server is defined update timer
+	if (sNtpServer.length() > 0)
+		trCheckNtpServer.update();
 }
 
 // --- Functions ---
 // Initialize WiFi
 void initWiFi () {
-	DEBUGLN("--- initWiFi ---");
+	DEBUGLN("--- initWiFi - Start ---");
 	// Disconnect() needs to be done befor connect again
 	WiFi.disconnect();
 
@@ -519,7 +532,7 @@ void initWiFi () {
 
 		delay(5000);
 	}
-	DEBUGLN("--------------");
+	DEBUGLN("--- initWiFi - End ---");
 }
 
 // EEPROM functions
@@ -527,12 +540,12 @@ byte readByteFromEEPROM(int iStart) {
 	int iPosition = iStart;
 	byte beValue;
 
-	//EEPROM.begin(512);
 	EEPROM.get(iPosition, beValue);
 
 	return (beValue);
 }
 
+// Write byte to EEPROM
 void writeByteToEEPROM(byte beValue, int iStart) {
 	int iPosition = iStart;
 
@@ -541,6 +554,7 @@ void writeByteToEEPROM(byte beValue, int iStart) {
 	EEPROM.commit();
 }
 
+// Read string from EEPROM
 String readStringFromEEPROM(int start, int max) {
 	int    end = start + max;
 	String s = "";
@@ -557,6 +571,7 @@ String readStringFromEEPROM(int start, int max) {
 	return (s);
 }
 
+// Write string to EEPROM
 void writeStringToEEPROM(String s, int start, int max) {
 	int end = start + max;
 
@@ -573,83 +588,110 @@ void writeStringToEEPROM(String s, int start, int max) {
 	EEPROM.commit();
 }
 
+// Erase EEPROM
+void eraseEEPROM() {
+	DEBUGLN("--- eraseEEPROM - Start ---");
+
+	for (int i = 0; i < EEPROM.length(); i++) {
+		EEPROM.write(i, 0);
+	}
+	EEPROM.commit();
+
+	DEBUGLN("--- eraseEEPROM - End ---");
+}
+
+// Erase SPIFFS
+void eraseSPIFFS() {
+	DEBUGLN("--- eraseSPIFFS - Start ---");
+
+	SPIFFS.format();
+
+	DEBUGLN("--- eraseSPIFFS - End ---");
+}
+
 // Initialize stored data
 void initEEPROMData() {
-	DEBUGLN("--- initEEPROMData ---");
+	DEBUGLN("--- initEEPROMData - Start ---");
 
-	// Wifi
-	// uncomment if reset needed
-	//writeStringToEEPROM("", SSID_START, SSID_MAX);
-	//writeStringToEEPROM("", PASSWORD_START, PASSWORD_MAX);
-	//writeStringToEEPROM("", HOSTNAME_START, HOSTNAME_MAX);
-	//writeStringToEEPROM("", URL_START, URL_MAX);
-
+	// WiFi SSID
 	sWifiSsd = readStringFromEEPROM(SSID_START, SSID_MAX);
-	sWifiPassword = readStringFromEEPROM(PASSWORD_START, PASSWORD_MAX);
+	
+	if (sWifiSsd.length() > 0) {
+		// WiFi Password
+		sWifiPassword = readStringFromEEPROM(PASSWORD_START, PASSWORD_MAX);
 
-	// Hostname
-	String sConfiguredHostname = readStringFromEEPROM(HOSTNAME_START, HOSTNAME_MAX);
-	if (sConfiguredHostname.length() > 0) {
-		sHostName = sConfiguredHostname;
+		// Hostname
+		String sConfiguredHostname = readStringFromEEPROM(HOSTNAME_START, HOSTNAME_MAX);
+		if (sConfiguredHostname.length() > 0) {
+			sHostName = sConfiguredHostname;
+		}
+
+		// Number of LEDs per corner
+		sNrOfLedsCorner = readByteFromEEPROM(NUMBER_OF_LEDS_CORNER_START);
+		beNrOfLedsCorner = sNrOfLedsCorner.toInt();
+
+		// Number of LEDs
+		sNrOfLeds = readStringFromEEPROM(NUMBER_OF_LEDS_START, NUMBER_OF_LEDS_MAX);
+		iNrOfLeds = sNrOfLeds.toInt();
+
+		// LED Color
+		sLedHexColor = readStringFromEEPROM(LED_COLOR_START, LED_COLOR_MAX);
+		stLedColors = hexToRGB(sLedHexColor);
+		crgbLedColors = CRGB(stLedColors.beRed, stLedColors.beGreen, stLedColors.beBlue);
+
+		// Backlight
+		bBacklight = readByteFromEEPROM(BACKLIGHT_START);
+
+		// Display On/Off
+		bAutDisplayEnabled = readByteFromEEPROM(AUTDISPLAYON_START);
+		beDisplayOn = readByteFromEEPROM(DISPLAYON_START);
+		beDisplayOff = readByteFromEEPROM(DISPLAYOFF_START);
+
+		// LED Brightness
+		beLedBrightness = readByteFromEEPROM(LED_BRIGHTNESS_START);
+
+		// LED Speed
+		beLedSpeed = readByteFromEEPROM(LED_SPEED_START);
+
+		//LED Patterm
+		beLedPattern = readByteFromEEPROM(LED_PATTERN_START);
+
+		// NTP Server
+		sNtpServer = readStringFromEEPROM(NTP_SERVER_START, NTP_SERVER_MAX);
+
+
+		DEBUG("Wifi pass: ");
+		DEBUGLN(sWifiPassword);
+		DEBUG("Wifi hostname: ");
+		DEBUGLN(sHostName);
+		DEBUG("Backlight: ");
+		DEBUGLN(bBacklight);
+		DEBUG("Auto Turn on/off: ");
+		DEBUGLN(bAutDisplayEnabled);
+		DEBUG("Display On: ");
+		DEBUGLN(beDisplayOn);
+		DEBUG("Display Off: ");
+		DEBUGLN(beDisplayOff);
+		DEBUG("Nr. of LEDs: ");
+		DEBUGLN(iNrOfLeds);
+		DEBUG("Nr. of LEDs per corner: ");
+		DEBUGLN(beNrOfLedsCorner);
+		DEBUG("Brightness: ");
+		DEBUGLN(beLedBrightness);
+		DEBUG("Speed: ");
+		DEBUGLN(beLedSpeed);
+		DEBUG("Pattern: ");
+		DEBUGLN(beLedPattern);
+		DEBUG("LED color: ");
+		DEBUGLN(sLedHexColor);
+		DEBUG("NTP Server: ");
+		DEBUGLN(sNtpServer);
 	}
-
-	// Number of LEDs
-	sNrOfLeds = readStringFromEEPROM(NUMBER_OF_LEDS_START, NUMBER_OF_LEDS_MAX);
-	iNrOfLeds = sNrOfLeds.toInt();
-
-	// LED Color
-	sLedHexColor = readStringFromEEPROM(LED_COLOR_START, LED_COLOR_MAX);
-	stLedColors = hexToRGB(sLedHexColor);
-	crgbLedColors = CRGB(stLedColors.beRed, stLedColors.beGreen, stLedColors.beBlue);
-  
-	// Backlight
-	bBacklight = readByteFromEEPROM(BACKLIGHT_START);
-
-	// Display On/Off
-	bAutDisplayEnabled = readByteFromEEPROM(AUTDISPLAYON_START);
-	beDisplayOn = readByteFromEEPROM(DISPLAYON_START);
-	beDisplayOff = readByteFromEEPROM(DISPLAYOFF_START);
-
-	// LED Brightness
-	beLedBrightness = readByteFromEEPROM(LED_BRIGHTNESS_START);
-
-	// LED Speed
-	beLedSpeed = readByteFromEEPROM(LED_SPEED_START);
-
-	//LED Patterm
-	beLedPattern = readByteFromEEPROM(LED_PATTERN_START);
-
-  // NTP Server
-  sNtpServer = readStringFromEEPROM(NTP_SERVER_START, NTP_SERVER_MAX);
 
 	DEBUG("Wifi ssid: ");
 	DEBUGLN(sWifiSsd);
-	DEBUG("Wifi pass: ");
-	DEBUGLN(sWifiPassword);
-	DEBUG("Wifi hostname: ");
-	DEBUGLN(sHostName);
-	DEBUG("Backlight: ");
-	DEBUGLN(bBacklight);
-	DEBUG("Auto Turn on/off: ");
-	DEBUGLN(bAutDisplayEnabled);
-	DEBUG("Display On: ");
-	DEBUGLN(beDisplayOn);
-	DEBUG("Display Off: ");
-	DEBUGLN(beDisplayOff);
-	DEBUG("Nr. of LEDs: ");
-	DEBUGLN(iNrOfLeds);
-	DEBUG("Brightness: ");
-	DEBUGLN(beLedBrightness);
-	DEBUG("Speed: ");
-	DEBUGLN(beLedSpeed);
-	DEBUG("Pattern: ");
-	DEBUGLN(beLedPattern);
-	DEBUG("LED color: ");
-	DEBUGLN(sLedHexColor);
-  DEBUG("NTP Server: ");
-  DEBUGLN(sNtpServer);
-  
-	DEBUGLN("--------------");
+
+	DEBUGLN("--- initEEPROMData - End ---");
 }
 
 // Web server functions
@@ -660,7 +702,7 @@ void initEEPROMData() {
 
 */
 void handleWSMsg(AsyncWebSocketClient *client, char *msg) {
-	DEBUGLN("--- handleWSMsg ---");
+	DEBUGLN("--- handleWSMsg - Start ---");
 	DEBUGLN(msg);
 
 	String wholeMsg(msg);
@@ -685,16 +727,22 @@ void handleWSMsg(AsyncWebSocketClient *client, char *msg) {
 			break;
 	}
 
-	DEBUGLN("--------------");
+	DEBUGLN("--- handleWSMsg - End ---");
 }
 
 void sendStatus(String msg) {
+	DEBUGLN("--- sendStatus - Start ---");
+
 	String json = "{\"type\":\"sv.status\",\"value\":\"" + msg + "\"}";
 
 	ayncWebSocket.textAll(json);
+
+	DEBUGLN("--- sendStatus - End ---");
 }
 
 void sendWifiValues(AsyncWebSocketClient *client) {
+	DEBUGLN("--- sendWifiValues - Start ---");
+
 	String json = String("{\"type\":\"sv.init.wifi\",\"value\":{\"ssid\":\"");
 
 	json += sWifiSsd;
@@ -709,25 +757,31 @@ void sendWifiValues(AsyncWebSocketClient *client) {
 	json = "{\"type\":\"sv.status\",\"value\":\"" + sLastStatus + "\"}";
 
 	client->text(json);
+
+	DEBUGLN("--- sendWifiValues - End ---");
 }
 
 void sendSettingsValues(AsyncWebSocketClient *client) {
-	DEBUGLN("sendSettingsValues");
+	DEBUGLN("--- sendSettingsValues - Start ---");
+
 	String url  = readStringFromEEPROM(URL_START, URL_MAX);
 	String json = String("{\"type\":\"sv.init.settings\",\"value\":{") +
 				"\"aut_display_enabled\":" + bAutDisplayEnabled + "," +
 				"\"display_on\":" + beDisplayOn + "," +
 				"\"display_off\":" + beDisplayOff + "," +
-        "\"ntp_server\":\"" + sNtpServer + "\"," +       
+				"\"ntp_server\":\"" + sNtpServer + "\"," +   
+				"\"led_strip_nr_of_leds_corner\":" + beNrOfLedsCorner + "," +
 				"\"led_strip_nr_of_leds\":" + iNrOfLeds +
 				"}}";
-
+	
 	client->text(json);
-	DEBUGLN("-----");
+	
+	DEBUGLN("--- sendSettingsValues - End ---");
 }
 
 void sendLedValues(AsyncWebSocketClient *client) {
-	DEBUGLN("sendLedValues");
+	DEBUGLN("--- sendLedValues - Start ---");
+
 	String json = String("{\"type\":\"sv.init.leds\",\"value\":{") +
 				"\"backlight\":" + bBacklight + "," +
 				"\"allow_led_params_mod\":" + bAllowLedParamMod + "," +
@@ -737,11 +791,12 @@ void sendLedValues(AsyncWebSocketClient *client) {
 				"}}";
 
 	client->text(json);
-	DEBUGLN("-----");
+	
+	DEBUGLN("--- sendLedValues - End ---");
 }
 
 void updateValue(String pair) {
-	DEBUGLN("--- updateValue ---");
+	DEBUGLN("--- sendLedValues - updateValue ---");
 
 	int index = pair.indexOf(':');
 
@@ -761,7 +816,6 @@ void updateValue(String pair) {
 		const char *to_find = value.c_str(); // string we want to find
 
 		if (strcmp (to_find, "true") == 0) { // this is the key: a match returns 0
-		  // Write new NTP server index value
 		  bAutDisplayEnabled = true;
 		}
 		else {
@@ -811,7 +865,6 @@ void updateValue(String pair) {
 		const char *to_find = value.c_str(); // string we want to find
 
 		if (strcmp (to_find, "true") == 0) { // this is the key: a match returns 0
-			// Write new NTP server index value
 			bBacklight = true;
 		}
 		else {
@@ -829,11 +882,11 @@ void updateValue(String pair) {
 		if (!bAutDisplayEnabled) {
 			// if backlight is On set brightness to last value
 			if (bBacklight) {
-			beLedBrightness = readByteFromEEPROM(LED_BRIGHTNESS_START);
+				beLedBrightness = readByteFromEEPROM(LED_BRIGHTNESS_START);
 			}
 			// if backlight is Off set brightness to 0
 			else {
-			beLedBrightness = 0;
+				beLedBrightness = 0;
 			}
 			// Change Rgb Led brightness
 			FastLED.setBrightness(beLedBrightness);
@@ -854,7 +907,6 @@ void updateValue(String pair) {
 		const char *to_find = value.c_str(); // string we want to find
 
 		if (strcmp(to_find, "true") == 0) { // this is the key: a match returns 0
-			// Write new NTP server index value
 			bAllowLedParamMod = true;
 		}
 		else {
@@ -917,7 +969,7 @@ void updateValue(String pair) {
 
 			// If brightness change is > 20 store brightness value
 			if (abs(beLedBrightness - beLedOldBrightness) > 20) {
-			beLedOldBrightness = beLedBrightness;
+				beLedOldBrightness = beLedBrightness;
 			}
 			// Change Rgb Led brightness
 			FastLED.setBrightness(beLedBrightness);
@@ -962,40 +1014,60 @@ void updateValue(String pair) {
 		DEBUGLN(beLedPattern);
 	}
 
-	// Set number of LEDs
+	// Set NTP server
+	else if (strcmp("setNtpServer", key) == 0) {
+	DEBUG("setNtpServer: ");
+	DEBUGLN(value);
+
+	sNtpServer = value;
+
+	// Store value
+	writeStringToEEPROM(sNtpServer, NTP_SERVER_START, NTP_SERVER_MAX);
+
+	DEBUGLN(sNtpServer);
+
+	// Stop the code and restart ESP
+	beLedPattern = 99;
+	changeLedPatternParameters(beLedPattern);
+	}
+
+	// Set number of LEDs per corner
+	else if (strcmp("setNrOfLedsCorner", key) == 0) {
+	DEBUG("setNrOfLedsCorner: ");
+	DEBUGLN(value);
+
+	sNrOfLedsCorner = value;
+	beNrOfLedsCorner = value.toInt();
+
+	// Store value
+	writeByteToEEPROM(beNrOfLedsCorner, NUMBER_OF_LEDS_CORNER_START);
+
+	DEBUGLN(beNrOfLedsCorner);
+
+	// Stop the code and restart ESP
+	beLedPattern = 99;
+	changeLedPatternParameters(beNrOfLedsCorner);
+	}
+
+	// Set total number of LEDs
 	else if (strcmp("setNrOfLeds", key) == 0) {
 		DEBUG("setNrOfLeds: ");
 		DEBUGLN(value);
 
-		iNrOfLeds = value.toInt();
 		sNrOfLeds = value;
-
+		iNrOfLeds = value.toInt();
+		
 		// Store value
 		writeStringToEEPROM(sNrOfLeds, NUMBER_OF_LEDS_START, NUMBER_OF_LEDS_MAX);
 
 		DEBUGLN(iNrOfLeds);
 
+		// Stop the code and restart ESP
 		beLedPattern = 99;
 		changeLedPatternParameters(beLedPattern);    
 	}
 
-  // Set NTP server
-  else if (strcmp("setNtpServer", key) == 0) {
-    DEBUG("setNtpServer: ");
-    DEBUGLN(value);
-
-    sNtpServer = value;
-
-    // Store value
-    writeStringToEEPROM(sNtpServer, NTP_SERVER_START, NTP_SERVER_MAX);
-
-    DEBUGLN(sNtpServer);   
-
-    // Restart ESP to update values
-    ESP.restart();
-  } 
-
-	DEBUGLN("--------------");
+	DEBUGLN("--- sendLedValues - End ---");
 }
 
 void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
@@ -1047,8 +1119,9 @@ String getInput(String type, String name, String label, String value) {
 
 // Web server Handler
 void mainHandler(AsyncWebServerRequest *request) {
-	DEBUGLN("Got main request");
+	DEBUGLN("--- mainHandler - Start ---");
 	
+
 	// When no wifi connection is defined (main_ap.html from folder data is not used)
 	// When settings submitted function wifiHandler() is called to store new credentials
 	if (WiFi.status() != WL_CONNECTED) {
@@ -1059,7 +1132,7 @@ void mainHandler(AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/index.html");
 	}
 
-	DEBUGLN("--------------");
+	DEBUGLN("--- mainHandler - End ---");
 }
 
 // Get the header for a 2 column table
@@ -1104,7 +1177,8 @@ String getTableFoot() {
 }
 
 void systemHandler(AsyncWebServerRequest *request) {
-	DEBUGLN("Got system request");
+	DEBUGLN("--- systemHandler - Start ---");
+
 	String response("<html><head><title>stLixieClock Stats</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/assets/table.css\"/></head><body>");
 
 	float voltage = (float)ESP.getVcc() / (float)1024;
@@ -1129,13 +1203,16 @@ void systemHandler(AsyncWebServerRequest *request) {
 
 	response += "</body></html>";
 	request->send(200, "text/html", response);
+	
+	DEBUGLN("--- systemHandler - End ---");
 }
 
 // Called when changing wifi settings
 // 1. when to Wifi connection defined
 // 2. during normal operation
 void wifiHandler(AsyncWebServerRequest *request) {
-	DEBUGLN("Got set wifi request");
+	DEBUGLN("--- wifiHandler - Start ---");
+
 	int args = request->args();
 
 	for (int i = 0; i < args; i++) {
@@ -1172,6 +1249,8 @@ void wifiHandler(AsyncWebServerRequest *request) {
 	else {
 		writeStringToEEPROM("", HOSTNAME_START, HOSTNAME_MAX);
 	}
+
+	DEBUGLN("--- wifiHandler - End ---");
 
 	ESP.restart();
 }
@@ -1261,7 +1340,7 @@ void changeLedPatternParameters(byte bePatternParameter) {
 			turnOffLeds(0, iNrOfLeds);
 			FastLED.show();
 
-      // Restart ESP to update values
+			// Restart ESP to update values
 			ESP.restart();
 			break;
 	}
@@ -1271,7 +1350,7 @@ void changeLedPatternParameters(byte bePatternParameter) {
 boolean checkHour() {
 	byte    beActualHour = hour();
 	boolean bDisplayDigits = beActualHour >= beDisplayOn && beActualHour < beDisplayOff;
-	boolean bRet;
+	boolean bRet = false;
   
 	if (beDisplayOn >= beDisplayOff) {
 		bDisplayDigits = beActualHour >= beDisplayOn || beActualHour < beDisplayOff;
@@ -1280,16 +1359,14 @@ boolean checkHour() {
 	if (bDisplayDigits) {
 		bRet = true;
 	}
-	else {
-		bRet = false;
-	}
   
 	return(bRet);  
 }
 
 // Check if LEDs should be On/Off
 boolean checkDisplay() {
-	boolean bRet;
+	boolean bRet = false;
+
 	// Turn LED On/Off
 	// On = Automatic display is ON and Actual hour is within Display On limits
 	//      OR
@@ -1304,18 +1381,20 @@ boolean checkDisplay() {
 	}
 	else {
 		beLedBrightness = 0;
-		bRet = false;
 	}
-	// Change Rgb Led brightness
-	FastLED.setBrightness(beLedBrightness);
-	FastLED.show();
+	// Execute only if device is configured
+	if (sWifiSsd.length() > 0) {
+		// Change Rgb Led brightness
+		FastLED.setBrightness(beLedBrightness);
+		FastLED.show();
+	}
 
 	return(bRet);
 }
 
 // NTP Server
 void checkNtpServer(void *context) {
-	DEBUGLN("--- updateTime ---");
+	DEBUGLN("--- checkNtpServer - Start ---");
   
 	int cbParsePacket, i;
 
@@ -1349,9 +1428,9 @@ void checkNtpServer(void *context) {
 
 	// Switch to another NTP Server
 	if (!cbParsePacket) {
-	DEBUGLN("No packet yet");
-	DEBUGLN("Calling checkNtpServer");
-	checkNtpServer((void *)0);
+		DEBUGLN("No packet yet");
+		DEBUGLN("Calling checkNtpServer");
+		checkNtpServer((void *)0);
 	}
 	else {
 		DEBUGLN(sNtpServer);
@@ -1393,12 +1472,12 @@ void checkNtpServer(void *context) {
 		DEBUGLN(second());
 	}
   
-	DEBUGLN("--------------");
+	DEBUGLN("--- checkNtpServer - End ---");
 }
 
 // send an NTP request to the time server at the given address
 void sendNTPpacket(IPAddress& address) {
-	DEBUGLN("sending NTP packet...");
+	DEBUGLN("--- sendNTPpacket - Start ---");
 
 	// set all bytes in the buffer to 0
 	memset(beNtpPacketBuffer, 0, NTPPACKETSIZE);
@@ -1409,7 +1488,7 @@ void sendNTPpacket(IPAddress& address) {
 	beNtpPacketBuffer[1] = 0;               // Stratum, or type of clock
 	beNtpPacketBuffer[2] = 6;               // Polling Interval
 	beNtpPacketBuffer[3] = 0xEC;            // Peer Clock Precision
-						// 8 bytes of zero for Root Delay & Root Dispersion
+											// 8 bytes of zero for Root Delay & Root Dispersion
 	beNtpPacketBuffer[12] = 49;
 	beNtpPacketBuffer[13] = 0x4E;
 	beNtpPacketBuffer[14] = 49;
@@ -1420,6 +1499,8 @@ void sendNTPpacket(IPAddress& address) {
 	udp.beginPacket(address, 123); //NTP requests are to port 123
 	udp.write(beNtpPacketBuffer, NTPPACKETSIZE);
 	udp.endPacket();
+
+	DEBUGLN("--- sendNTPpacket - End ---");
 }
 
 // LED patterns
@@ -1427,8 +1508,10 @@ void fillLedsFromPaletteColors( uint8_t ui8ColorIndex)
 {
 	uint8_t ui8Brightness = 255;
 
-	for ( int i = 0; i < iNrOfLeds; i++) {
-		crgbLeds[i] = ColorFromPalette( crgbCurrentPalette, ui8ColorIndex, ui8Brightness, currentBlending);
+	for ( int i = 0; i < ((iNrOfLeds / beNrOfLedsCorner) + beNrOfLedsCorner); i++) {
+		for (int j = i * beNrOfLedsCorner; j < ((i * beNrOfLedsCorner) + beNrOfLedsCorner); j++) {
+			crgbLeds[j] = ColorFromPalette(crgbCurrentPalette, ui8ColorIndex, ui8Brightness, currentBlending);
+		}
 		ui8ColorIndex += 3;
 	}
 }
