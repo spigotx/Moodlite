@@ -1,7 +1,7 @@
 /*
 	Name:     Moodlite.ino
 	Created:  27.12.2018
-	Version:  1.1
+	Version:  1.1.1
 	AuthorS:  Steve Wagg aka CdRsKuLL, 
 			  Spigot (M.V.)
 	License:  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0 as published by the Free Software Foundation. 
@@ -694,6 +694,16 @@ void initEEPROMData() {
 	DEBUGLN("--- initEEPROMData - End ---");
 }
 
+// Set default values to EEPROM
+void setDefaulValues() {
+  writeByteToEEPROM(1, BACKLIGHT_START);
+  writeByteToEEPROM(20, LED_BRIGHTNESS_START);
+  writeStringToEEPROM("FF0000", LED_COLOR_START, LED_COLOR_MAX);
+  writeByteToEEPROM(1, NUMBER_OF_LEDS_CORNER_START);
+  writeStringToEEPROM("3", NUMBER_OF_LEDS_START, NUMBER_OF_LEDS_MAX);
+  writeByteToEEPROM(50, LED_SPEED_START);
+}
+
 // Web server functions
 /*
   msg is
@@ -1251,6 +1261,11 @@ void wifiHandler(AsyncWebServerRequest *request) {
 	}
 
 	DEBUGLN("--- wifiHandler - End ---");
+
+  // Set default values
+  DEBUGLN("--- setDefaulValues - Start ---");
+  setDefaulValues();
+  DEBUGLN("--- setDefaulValues - End ---");
 
 	ESP.restart();
 }
