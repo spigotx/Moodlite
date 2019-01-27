@@ -17,11 +17,11 @@
 #define STANDBY_LED_BRIGHTNESS			2			// Define Standby mode LED brightness
 #define DEBUG_ON						true		// Flag to turn On/Off debugging		[True = On, False = Off]
 #define STATIC_IP						false		// Flag to use static IP				[True = Static IP, False = DHCP - AP mode]
-#define RESET_BUTTON					true		// Flag to use hardware reset button	[True = Use HW button, False = Don't use HW button]
-#define NTP_ON							true		// Flag to use NTP Server				[True = Use NTP server, False = Don't use NTP server]
-#define MQTT_ON							true		// Flag to use MQTT						[True = Use MQTT server, False = Don't use MQTT server]
+#define RESET_BUTTON					false		// Flag to use hardware reset button	[True = Use HW button, False = Don't use HW button]
+#define NTP_ON							false		// Flag to use NTP Server				[True = Use NTP server, False = Don't use NTP server]
+#define MQTT_ON							false		// Flag to use MQTT						[True = Use MQTT server, False = Don't use MQTT server]
 #define OTA_ON							true		// Flag to use OTA updates				[True = Use OTA updates, False = Don't use OTA updates]
-#define PIR_ON							true		// Flag to use PIR sensor				[True = Use PIR sensor, False = Don't use PIR sensor]
+#define PIR_ON							false		// Flag to use PIR sensor				[True = Use PIR sensor, False = Don't use PIR sensor]
 #define ESP8266							true		// Flag to use ESP8266					
 //#define ESP32							true		// Flag to use ESP32					
 // ----------------------------------------------------
