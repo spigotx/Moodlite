@@ -1,0 +1,20 @@
+ slider_moodlite_speed:
+   name: Speed
+   initial: 50
+   min: 0
+   max: 250
+   step: 10
+ slider_moodlite_display_on:
+   name: Display On
+   initial: 10
+   min: 0
+   max: 23
+   step: 1
+   unit_of_measurement: h
+ slider_moodlite_display_off:
+   name: Display Off
+   initial: 22
+   min: 0
+   max: 23
+   step: 1
+   unit_of_measurement: h   

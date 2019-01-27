@@ -1,0 +1,186 @@
+# Automation events
+#      
+# Moodlite
+# 
+# Speed
+  - alias: slider_moodlite_speed_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/Speed/Get'
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.slider_moodlite_speed
+        value: "{{ trigger.payload }}"
+  - alias: slider_moodlite_speed_move
+    trigger:
+      platform: state
+      entity_id: input_number.slider_moodlite_speed
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/Speed/Set'
+        retain: true
+        payload: "{{ states('input_number.slider_moodlite_speed') | int }}"        
+# Display On
+  - alias: slider_moodlite_display_on_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/DisplayOn/Get'
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.slider_moodlite_display_on
+        value: "{{ trigger.payload }}"
+  - alias: slider_moodlite_display_on_move
+    trigger:
+      platform: state
+      entity_id: input_number.slider_moodlite_display_on
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/DisplayOn/Set'
+        retain: true
+        payload: "{{ states('input_number.slider_moodlite_display_on') | int }}"
+# Display Off
+  - alias: slider_moodlite_display_off_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/DisplayOff/Get'
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.slider_moodlite_display_off
+        value: "{{ trigger.payload }}"
+  - alias: slider_moodlite_display_off_move
+    trigger:
+      platform: state
+      entity_id: input_number.slider_moodlite_display_off
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/DisplayOff/Set'
+        retain: true
+        payload: "{{ states('input_number.slider_moodlite_display_off') | int }}"                 
+# Pattern color
+  - alias: input_select_moodlite_pattern_color_change
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_pattern_color
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/PatternColor/Set'
+        retain: true
+        payload: >-
+          {% if states.input_select.input_select_moodlite_pattern_color.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Cloud" %}1
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Lava" %}2
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Ocean" %}3
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Forest" %}4
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Rainbow" %}5
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Rainbow Stripes" %}6
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Party" %}7
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Heat" %}8
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Fire" %}9
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Random" %}10
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Purple and Green" %}11
+          {% elif states.input_select.input_select_moodlite_pattern_color.state == "Red, White and Blue" %}12          
+          {% endif %}
+  - alias: input_select_moodlite_pattern_color_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/PatternColor/Get'
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_pattern_color
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "1" %}Cloud
+          {% elif trigger.payload == "2" %}Lava
+          {% elif trigger.payload == "3" %}Ocean
+          {% elif trigger.payload == "4" %}Forest
+          {% elif trigger.payload == "5" %}Rainbow
+          {% elif trigger.payload == "6" %}Rainbow Stripes
+          {% elif trigger.payload == "7" %}Party
+          {% elif trigger.payload == "8" %}Heat
+          {% elif trigger.payload == "9" %}Fire
+          {% elif trigger.payload == "10" %}Random
+          {% elif trigger.payload == "11" %}Purple and Green
+          {% elif trigger.payload == "12" %}Red, White and Blue          
+          {% endif %}          
+# Pattern
+  - alias: input_select_moodlite_patterns_change
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_patterns   
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/Pattern/Set'
+        retain: true
+        payload: >-
+          {% if states.input_select.input_select_moodlite_patterns.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Fixed" %}1
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Standard" %}2
+          {% elif states.input_select.input_select_moodlite_patterns.state == "BPM" %}3
+          {% elif states.input_select.input_select_moodlite_patterns.state == "KITT" %}4
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Plasma" %}5
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Fire Stripes" %}6         
+          {% endif %}     
+  - alias: input_select_moodlite_patterns_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/Pattern/Get'    
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_patterns
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "1" %}Fixed
+          {% elif trigger.payload == "2" %}Standard
+          {% elif trigger.payload == "3" %}BPM
+          {% elif trigger.payload == "4" %}KITT
+          {% elif trigger.payload == "5" %}Plasma
+          {% elif trigger.payload == "6" %}Fire Stripes
+          {% endif %}                    
+# Fixed pattern
+  - alias: input_select_moodlite_fixed_patterns_change
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_fixed_patterns    
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/FixedPattern/Set'
+        retain: true
+        payload: >-
+          {% if states.input_select.input_select_moodlite_fixed_patterns.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Confetti" %}100
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Sinelon" %}101
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Juggle" %}102
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Blendwave" %}103
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Rainbow Beat" %}104
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Full Rainbow" %}105       
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Rainbow With Glitter" %}106
+          {% endif %}                
+  - alias: input_select_moodlite_fixed_patterns_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/FixedPattern/Get' 
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_fixed_patterns
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "100" %}Confetti
+          {% elif trigger.payload == "101" %}Sinelon
+          {% elif trigger.payload == "102" %}Juggle
+          {% elif trigger.payload == "103" %}Blendwave
+          {% elif trigger.payload == "104" %}Rainbow Beat
+          {% elif trigger.payload == "105" %}Full Rainbow       
+          {% elif trigger.payload == "106" %}Rainbow With Glitter 
+          {% endif %}            

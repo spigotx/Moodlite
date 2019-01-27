@@ -1,0 +1,46 @@
+#
+# Moodlite
+# 
+# # Pattern color
+ input_select_moodlite_pattern_color:
+   name: Pattern color
+   options:
+     - Select ...
+     - Cloud
+     - Lava
+     - Ocean
+     - Forest
+     - Rainbow
+     - Rainbow Stripes
+     - Party
+     - Heat
+     - Fire
+     - Random
+     - Purple and Green
+     - Red, White and Blue
+   initial: Select ...
+# Patterns   
+ input_select_moodlite_patterns:
+   name: Patterns
+   options:
+     - Select ...
+     - Fixed
+     - Standard
+     - BPM
+     - KITT
+     - Plasma
+     - Fire Stripes
+   initial: Select ...
+# Fixed patterns   
+ input_select_moodlite_fixed_patterns:
+   name: Patterns
+   options:
+     - Select ...
+     - Confetti
+     - Sinelon
+     - Juggle
+     - Blendwave
+     - Rainbow Beat
+     - Full Rainbow
+     - Rainbow With Glitter
+   initial: Select ...   

@@ -5,36 +5,60 @@
 		<!- Favicon ->
 		<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 		
+		<!- Meta data ->
 		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-    	<!- JS ->
-		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    	
+		<!- JS ->
+		<!- jquery ->
+		<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.js"></script>
       	<!- Color picker ->
 		<script type="text/javascript" src="js/colorpicker.js"></script>
+		<!- Round slider ->
+		<script type="text/javascript" src="js/roundslider.min.js"></script>
     
     	<!- CSS ->
-		<link href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
-		<link href="https://cdn.jsdelivr.net/jquery.roundslider/1.3/roundslider.min.css" rel="stylesheet">                                    
+		<!- jquery ->
+		<link href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">                                  
 		<!- Color picker ->
         <link href="css/colorpicker.css" rel="stylesheet" type="text/css">
+		<!- Round slider ->
+		<link href="css/roundslider.min.css" rel="stylesheet" type="text/css">
 	
 		<style type="text/css">
-			.dispInline, .dispInlineLabel{
+			.dispInline, .dispInlineLabel, .dispInlineButton, .dispInlineSelectmenu, .dispInlineSlider{
 				display: inline-block;
 				border-bottom-width:0;
-			}
-			.dispInlineLabel{
-				min-width: 340px;
-				vertical-align: middle;
 			}
 			.dispInline{
 				min-width: 150px;
 				vertical-align: middle;
+			}			
+			.dispInlineLabel{
+				min-width: 340px;
+				vertical-align: middle;
 			}
+			.dispInlineButton{
+				min-width: 150px;
+				vertical-align: middle;
+				width: 65%;
+			}	
+			.dispInlineSelectmenu{
+				min-width: 230px;
+				vertical-align: middle;
+			}				
+			.dispInlineSlider{
+				min-width: 150px;
+				vertical-align: middle;
+				width: 75%;
+			}	
+			
 			.clearFloats{
 				clear:both;
 			}
+            .bottom-three {
+             margin-bottom: 1cm;
+            }			
 
 			/* Style override */      
 			/* Main module */      
@@ -50,7 +74,7 @@
 			}
 
 			.ui-header .ui-title, .ui-footer .ui-title {
-				font-size: 1.5em;
+				font-size: 1.2em;
 			}
 
 			/* Sheet */      
@@ -73,6 +97,18 @@
 				width: 50%;			
 			}
 			*/
+			
+			/* Save and restart button */
+			.save-restart {
+              display: block;
+              width: 100%;
+              border: none;
+              background-color: #4CAF50;
+              padding: 14px 28px;
+              font-size: 16px;
+              cursor: pointer;
+              text-align: center;
+            }
 
 			/* Settings */
 			.rs-control .rs-range-color {	
@@ -103,12 +139,10 @@
 			}
 
 			#text_head1 {
-				//color: green;
 				font-size: 20px;
 				font-weight: bold;
 			}
 			#text_head2 {
-				//color: green;
 				font-size: 16px;
 				font-weight: bold;
 			}
@@ -154,14 +188,21 @@
 					var element = $('#' + key);
 					var elType = element.attr('type');
 					
+					//console.log(elType); 
+					
 					if (elType == "checkbox") {
 						element.prop("checked", this[key]);
 						element.flipswitch("refresh");
 					} 
+					else if (elType == "selectmenu") {
+						element.val(this[key]);
+						element.selectmenu("refresh");
+					}
 					else {
 						if (key == "cycle_time") {
 							element.val(this[key] * 6);
-						} else {
+						} 
+						else {
 							element.val(this[key]);
 						}
 						if (elType == "number") {
@@ -225,33 +266,18 @@
 						sendMsg('1:'); 
 						break;
 					case 'settings': 
-						sendMsg('2:'); 
-						$('#ntp_server').attr('size','20');
-						$('#led_strip_nr_of_leds').attr('size','1');						
+						sendMsg('2:'); 			
 						break;
 					case 'leds': 
-						sendMsg('3:'); 						
-						// Enable/Disable sliders according LED params modif. checkbox
-						// If LED params modif. are enabled enable sliders
-						if ($('#allow_led_params_mod').is(':checked')) {
-							$('#led_strip_brightness').slider('enable');
-							$('#led_strip_speed').slider('enable');
-							$('#colorpickerfield_led_strip').prop('disabled', false);					
-						} 
-						// If LED params modif. aren't enabled enable sliders					
-						else {
-							$('#led_strip_brightness').slider('disable');	
-							$('#led_strip_speed').slider('disable');	
-							$('#colorpickerfield_led_strip').prop('disabled', true);			
-						}							
+						sendMsg('3:'); 	
 						break;	
-				}				
+				}		
 			} ;
 			
 			var ws;
 
 			ws = new WebSocket(url("/ws"));
-			
+
 			// subscribe to visibility change events
 			document.addEventListener('visibilitychange', function() {
 				// fires when app transitions from prerender, user returns to the app / tab.
@@ -295,6 +321,7 @@
 				}
 			}
 			
+			// Draw horizontal line
 			function createLine(x1,y1, x2,y2){
 				var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 				var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
@@ -312,95 +339,100 @@
 
 				return line;
 			}
-			
+						
+			// ------ Page ------
 			// On page load
 			$(document).ready(function () {
 				$(document).on('pagecontainerbeforechange', function(event, ui) {
+				    // --- Sliders ---
+					// Automatic display On/Off time
 					$.fn.roundSlider.prototype._invertRange = true;
 					$('#aut_display_on').roundSlider({
-						  sliderType: "range",
-						  //showTooltip: false,
-						  radius: 60,
-						  width: 20,
-						  min: 0,
-						  max: 24,
-						  step: 1,
-						  value: "8,22",
-						  startAngle: 0,
-						  endAngle: "+360",
-						  handleSize: "+8",
-						  
-						  change: function(e) {
+						sliderType: "range",
+						//showTooltip: false,
+						radius: 60,
+						width: 20,
+						min: 0,
+						max: 24,
+						step: 1,
+						value: "8,22",
+						startAngle: 0,
+						endAngle: "+360",
+						handleSize: "+8",
+
+						change: function(e) {
 							if (serverSetting) {
 								return;
 							}
-							
+
 							var values = e.value.split(',');
 							var msg = '5:display_on:'+ values[0];
 							sendMsg(msg);
 							msg = '5:display_off:'+ values[1];
 							sendMsg(msg);
-						  }
-						});
-					
-					// Set NTP server button
-					$('#btnNtpServer').click(function(){
-						var value = $('#ntp_server').val();
-						var msg = '5:setNtpServer:' + value;
-						sendMsg(msg);
-						// Reload page after 8s
-						setTimeout(function() {
-                            location.reload();
-                        }, 8000)
-					}); 
-
-					// Set  nr. of LEDs per corner button
-					$('#btnNrOfLedsCorner').click(function(){
-						var value = $('#led_strip_nr_of_leds_corner').val();
-						var msg = '5:setNrOfLedsCorner:' + value;
-						sendMsg(msg);
-						// Reload page after 8s
-						setTimeout(function() {
-                            location.reload();
-                        }, 8000)
-					}); 
-					
-					// Set total nr. of LEDs button
-					$('#btnNrOfLeds').click(function(){
-						var value = $('#led_strip_nr_of_leds').val();
-						var msg = '5:setNrOfLeds:' + value;
-						sendMsg(msg);
-						// Reload page after 8s
-						setTimeout(function() {
-                            location.reload();
-                        }, 8000)
-					}); 
+						}
+					});	
+						
 					pageRefresh(ui.toPage[0].id);	
-				});		
-				
-				$('#led_strip_nr_of_leds').attr('size','1');
-				
-				// Enable/Disable sliders according LED params modif. checkbox
-				$('#allow_led_params_mod').change(function(){
-					if ($(this).is(':checked')) {
-						$('#led_strip_brightness').slider('enable');					
-						$('#led_strip_speed').slider('enable');					
-						$('#colorpickerfield_led_strip').prop('disabled', false);				
-					} else {
-						$('#led_strip_brightness').slider('disable');	
-						$('#led_strip_speed').slider('disable');
-						$('#colorpickerfield_led_strip').prop('disabled', true);	
-					}
-				});	
+				});					
 
-				// Show hostname as H1 text
-				// At first load, show default text 'Moodlite'
-				//$("#toptitle_led").text($('#hostname').val());	
-				//$("#toptitle_settings").text($('#hostname').val());	
-				//$("#toptitle_wifi").text($('#hostname').val());	
+				// Load LEDs data
+				pageRefresh('leds');				
+
+				// ------ Objects ------
+				// --- Sliders ---
+				// Automatic display On/Off time
+				$.fn.roundSlider.prototype._invertRange = true;
+				$('#aut_display_on').roundSlider({
+					sliderType: "range",
+					//showTooltip: false,
+					radius: 60,
+					width: 20,
+					min: 0,
+					max: 24,
+					step: 1,
+					value: "8,22",
+					startAngle: 0,
+					endAngle: "+360",
+					handleSize: "+8",
+
+					change: function(e) {
+						if (serverSetting) {
+							return;
+						}
+
+						var values = e.value.split(',');
+						var msg = '5:display_on:'+ values[0];
+						sendMsg(msg);
+						msg = '5:display_off:'+ values[1];
+						sendMsg(msg);
+					}
+				});				
 				
-				// Color pickers
-				// LEDs
+				// Brightness slider settings/events
+				$('#led_strip_brightness').slider({						
+					// Run code if slider value changes
+					slide: function( event, ui ) {
+					},
+					// Run code if slider released
+					stop: function(event, ui) {
+						elementChange(this);
+					}							
+				});
+
+				// Speed slider settings/events
+				$('#led_strip_speed').slider({						
+					// Run code if slider value changes
+					slide: function( event, ui ) {
+					},
+					// Run code if slider released
+					stop: function(event, ui) {
+						elementChange(this);
+					}							
+				});
+				
+				// --- Color pickers ---
+				// LEDs color picker
 				$('#colorpickerfield_led_strip').ColorPicker({
 					onSubmit: function(hsb, hex, rgb, el, parent) {
 						$(el).val(hex);
@@ -414,47 +446,120 @@
 				.on('keyup', function(){
 					$(this).ColorPickerSetColor(this.value);
 				});	
+                
+				
+				// --- Buttons ---
+				// Set LED Properties button
+				$('#btnSetLedsSettingsProp').click(function(){
+					var msg = '5:saveDefaultValues:1';
+					sendMsg(msg);
+				});
+				
+				// Set LED Settings
+				$('#btnSetLedsSettings').click(function(){
+				    $(document.body).css({'cursor' : 'wait'});
+				    
+					var value = $('#ntp_server').val();
+					var msg = '5:setNtpServer:' + value;
+				
+					sendMsg(msg);
+           			value = $('#led_strip_nr_of_leds_corner').val();
+		    		msg = '5:setNrOfLedsCorner:' + value;
+			    	sendMsg(msg);
 
-				// Pattern buttons
-				$('#btnPtn0').click(function(){
-					var msg = '5:pattern:0';
-					sendMsg(msg);
+				    value = $('#led_strip_nr_of_leds').val();
+				    msg = '5:setNrOfLeds:' + value;
+				    sendMsg(msg);
+                    
+                    // Call save values
+   					msg = '5:saveLedsSettings:1';
+   					sendMsg(msg);
+				
+					// Call restart
+					setTimeout(function() {                           
+						msg = '5:restart:1';
+						sendMsg(msg);
+                    }, 2000)
+                    
+                    // Reload page after 10s
+					setTimeout(function() {
+                        location.reload();
+                    }, 12000)
 				}); 
-				$('#btnPtn1').click(function(){
-					var msg = '5:pattern:1';
+				
+				// Set MQTT parameters
+				$('#btnSetMqtt').click(function(){
+				    $(document.body).css({'cursor' : 'wait'});
+				    
+					var value = $('#mqtt_host_name').val();
+					var msg = '5:setMqttHostName:' + value;
+				
 					sendMsg(msg);
-				}); 
-				$('#btnPtn2').click(function(){
-					var msg = '5:pattern:2';
+
+					value = $('#mqtt_port').val();
+					msg = '5:setMqttPort:' + value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn3').click(function(){
-					var msg = '5:pattern:3';
+
+					value = $('#mqtt_user_name').val();
+					msg = '5:setMqttUserName:' + value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn4').click(function(){
-					var msg = '5:pattern:4';
+				
+					value = $('#mqtt_user_password').val();
+					msg = '5:setMqttUserPassword:' + value;
+					sendMsg(msg);						
+
+					value = $('#mqtt_client_id').val();
+					msg = '5:setMqttClient:' + value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn5').click(function(){
-					var msg = '5:pattern:5';
+
+                    // Call save values
+   					msg = '5:saveMqttSettings:1';
+   					sendMsg(msg);
+                    
+					// Call restart
+					setTimeout(function() {                            
+						msg = '5:restart:1';
+						sendMsg(msg);
+                    }, 2000)
+                    
+                    // Reload page after 10s
+					setTimeout(function() {
+                        location.reload();
+                    }, 12000)
+				}); 				
+
+				// --- Select menu ---
+				// Pattern color
+				$("#pattern_color").on("change",function(){
+					var value = $('#pattern_color').selectmenu('widget').find('option:selected').val()
+					var msg = '5:patterncolor:'+ value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn6').click(function(){
-					var msg = '5:pattern:6';
+                });
+                
+                // Patterns
+				$("#patterns").on("change",function(){
+					var value = $('#patterns').selectmenu('widget').find('option:selected').val()
+					var msg = '5:pattern:'+ value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn7').click(function(){
-					var msg = '5:pattern:7';
+					
+					// Clear Fixed pattern selector
+					$("#fixed_patterns").val(0);
+					$("#fixed_patterns").selectmenu("refresh");
+                });
+
+                // Fixed pattern
+				$("#fixed_patterns").on("change",function(){
+					var value = $('#fixed_patterns').selectmenu('widget').find('option:selected').val()
+					var msg = '5:fixedpattern:'+ value;
 					sendMsg(msg);
-				}); 
-				$('#btnPtn8').click(function(){
-					var msg = '5:pattern:8';
-					sendMsg(msg);
-				}); 			
+					
+					// Clear Pattern selector
+					$("#patterns").val(0);
+					$("#patterns").selectmenu("refresh");
+                });      
 			});
 		
-			// Data
+			// ------ Data ------
 			var wifiData = {
 				type: "sv.init.wifi",
 				value: {
@@ -465,39 +570,42 @@
 			};
 			
 			var statusData = {
-					type: "sv.status",
-					value: "What's going on?"
+				type: "sv.status",
+				value: ""
 			};
 			
 			var settingsData = {
-					type: "sv.init.settings",
-					value: {
-						aut_display_enabled: true,
-						display_on: 5,
-						display_off: 22,
-						ntp_server: "",						
-						led_strip_nr_of_leds_corner: 3,						
-						led_strip_nr_of_leds: 3
-					}
-				};
+				type: "sv.init.settings",
+				value: {
+					ntp_server: "",
+					ntp_date_time: "",						
+					led_strip_nr_of_leds_corner: 1,						
+					led_strip_nr_of_leds: 3, 
+					mqtt_host_name: "",
+					mqtt_port: "",
+					mqtt_user_name: "",
+					mqtt_user_password: "",
+					mqtt_client_id: ""
+				}
+			};
 				
 			var ledsData = {
-					type: "sv.init.leds",
-					value: {
-						backlight: true,
-						allow_led_params_mod: false,
-						colorpickerfield_led_strip: "00ff00",												
-						led_strip_brightness: 15,
-						led_strip_speed: 20
-					}
-				};
-				
-			var sensorData = {
-					type: "sv.init.sensor",
-					value: {
-
-					}
-				};				
+				type: "sv.init.leds",
+				value: {
+		    		pattern_color: 0,
+					patterns: 0,
+					fixed_patterns: 0,
+					aut_display_enabled: true,
+					display_on: 5,
+					display_off: 22,
+					backlight: true,
+					pir_sensor_endabled: false,
+					allow_led_params_mod: false,
+					colorpickerfield_led_strip: "00ff00",												
+					led_strip_brightness: 15,
+					led_strip_speed: 20
+				}
+			};			
 		</script>
 	</head>
 	<body>
@@ -519,12 +627,89 @@
 				</div>
 			</div>
 			<div data-role="content">
-				<form id="set_leds" action="/set_leds" method="POST" id="leds_form">
+				<form action="/set_leds" method="POST" id="leds_form">			    
+					<div data-role="fieldcontain">
+						<label for="text_head1" id="text_head1">Tile patterns</label>
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+							<label for="pattern_color">Colors</label>
+					</div>
+					<div class="dispInlineSelectmenu">
+					    <select type="selectmenu" name="pattern_color" id="pattern_color">
+				            <option value="0"selected disabled hidden></option>
+							<option value="1">Cloud</option>
+							<option value="2">Lava</option>
+							<option value="3">Ocean</option>
+							<option value="4">Forest</option>
+							<option value="5">Rainbow</option>
+							<option value="6">Rainbow Stripes</option>
+							<option value="7">Party</option>
+							<option value="8">Heat</option>
+							<option value="9">Fire</option>
+							<option value="10">Random</option>
+							<option value="11">Purple and Green</option>
+							<option value="12">Red, White and Blue</option>							
+						</select>
+					</div>			
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+						<label for="patterns">Patterns</label>
+					</div>
+					<div class="dispInlineSelectmenu">
+					    <select type="selectmenu" name="patterns" id="patterns">
+				            <option value="0"selected disabled hidden></option>
+							<option value="1">Fixed</option>
+							<option value="2">Standard</option>
+							<option value="3">BPM</option>
+							<option value="4">KITT</option>
+							<option value="5">Plasma</option>
+							<option value="6">Fire Stripes</option>						
+						</select>
+					</div>	
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+							<label for="fixed_patterns">Fixed Patterns</label>
+					</div>
+					<div class="dispInlineSelectmenu">
+					    <select type="selectmenu" name="fixed_patterns" id="fixed_patterns">
+				            <option value="0"selected disabled hidden></option>
+							<option value="100">Confetti</option>
+							<option value="101">Sinelon</option>
+							<option value="102">Juggle</option>
+							<option value="103">Blendwave</option>
+							<option value="104">Rainbow Beat</option>
+							<option value="105">Full Rainbow</option>
+							<option value="106">Rainbow With Glitter</option>						
+						</select>
+					</div>						
+ 		    	    <div class="line"></div>     		    	    
 					<div data-role="fieldcontain">
 						<label for="text_head1" id="text_head1">Properties</label>
-					</div>	                
+					</div>	                					
+					<div class="clearFloats"></div>
 					<div class="dispInlineLabel">
-							<label for="backlight">Backlight</label>
+						<label for="aut_display_enabled">Automatic Display On</label>
+					</div>
+					<div class="dispInline" >
+						<input onchange="elementChange(this)" type="checkbox" 
+						    data-role="flipswitch" name="aut_display_enabled" id="aut_display_enabled" 
+						    data-on-text="On" 
+						    data-off-text="Off" 
+						    data-wrapper-class="custom-label-flipswitch"
+						>
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="aut_display_on">Display On time</label>
+					</div>
+					<div class="dispInline" >
+						<div id="aut_display_on">
+						</div>
+					</div>					
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel">
+							<label for="backlight">Manual Display On</label>
 					</div>
 					<div class="dispInline">
 							<input onchange="elementChange(this)" type="checkbox"
@@ -532,56 +717,49 @@
 							data-on-text="On" 
 							data-off-text="Off"
 							data-wrapper-class="custom-label-flipswitch">
-					</div>
+					</div>					
 					<div class="clearFloats"></div>
 					<div class="dispInlineLabel">
-							<label for="allow_led_params_mod">Allow modifications</label>
+						<label for="pir_sensor_endabled">Motion sensor</label>
 					</div>
-					<div class="dispInline">
-							<input onchange="elementChange(this)" type="checkbox"
-							data-role="flipswitch" name="allow_led_params_mod" id="allow_led_params_mod"
-							data-on-text="On" 
-							data-off-text="Off"
-							data-wrapper-class="custom-label-flipswitch">
-					</div>
+					<div class="dispInline" >
+						<input onchange="elementChange(this)" type="checkbox" 
+						    data-role="flipswitch" name="pir_sensor_endabled" id="pir_sensor_endabled" 
+						    data-on-text="On" 
+						    data-off-text="Off" 
+						    data-wrapper-class="custom-label-flipswitch"
+						>
+					</div>				
 					<div class="clearFloats"></div>
-					<div data-role="fieldcontain">
+					<div class="dispInlineLabel">
 						<label for="led_strip_brightness">Brightness</label>
-						<input onchange="elementChange(this)" type="range" name="led_strip_brightness" id="led_strip_brightness" min="0" max="255" value="15" step="20">
+					</div>
+					<div class="dispInlineSlider">
+						<input type="range" name="led_strip_brightness" id="led_strip_brightness" min="0" max="255" value="10" step="1">
 					</div>	
 					<div class="clearFloats"></div>	
-					<div data-role="fieldcontain">
+					<div class="dispInlineLabel">
 						<label for="led_strip_speed">Speed</label>
-						<input onchange="elementChange(this)" type="range" name="led_strip_speed" id="led_strip_speed" min="1" max="250" value="20" step="10">
+					</div>
+					<div class="dispInlineSlider">							
+						<input type="range" name="led_strip_speed" id="led_strip_speed" min="0" max="250" value="20" step="10">
 					</div>	
                     <div class="clearFloats"></div>					
-					<div data-role="fieldcontain">
+					<div class="dispInlineLabel">
 						<label for="colorpickerfield_led_strip">LED Color</label>						
-                    	<input type="text" maxlength="6" size="6" name="colorpickerfield_led_strip" id="colorpickerfield_led_strip" value="00ff00">	
-					</div>        					
-			    	<div class="line"></div>		
-					<div data-role="fieldcontain">
-						<label for="text_head1" id="text_head1">Pattern</label>
-					</div>	
-					<div class="clearFloats"></div>	
-					<div data-role="fieldcontain">
-    					<input id="btnPtn0" type="button" data-inline="true" value="P0">
-    					<input id="btnPtn1" type="button" data-inline="true" value="P1">
-    					<input id="btnPtn2" type="button" data-inline="true" value="P2">
-    					<input id="btnPtn3" type="button" data-inline="true" value="P3">
-    					<input id="btnPtn4" type="button" data-inline="true" value="P4">
-    					<input id="btnPtn5" type="button" data-inline="true" value="P5">
-    					<input id="btnPtn6" type="button" data-inline="true" value="P6">
-    					<input id="btnPtn7" type="button" data-inline="true" value="P7">
-    					<input id="btnPtn8" type="button" data-inline="true" value="P8">
- 					</div>
+					</div>
+					<div class="dispInlineSelectmenu">					
+                    	<input type="text" name="colorpickerfield_led_strip" id="colorpickerfield_led_strip" value="00ff00"  minlength="6" maxlength="6" size="6">	
+					</div>    
+				    <div>
+						 <button type="button" id="btnSetLedsSettingsProp" value="Set" class="save-restart">Save as default</button> 
+					</div>
 				</form> 					
 			</div>
 			<footer>
                 <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
             </footer>
 		</div>	
-
 		<div data-role="page" id="settings">
 			<div data-role="header">
 				<h1 id="toptitle_settings">Moodlite</h1>
@@ -601,57 +779,83 @@
 			</div>
 			<div data-role="content">
 				<form action="/set_moodlite" method="POST" id="settings_form">
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-						<label for="aut_display_enabled">Display On Enabled</label>
-					</div>
-					<div class="dispInline" >
-						<input onchange="elementChange(this)" type="checkbox" 
-						    data-role="flipswitch" name="aut_display_enabled" id="aut_display_enabled" 
-						    data-on-text="On" 
-						    data-off-text="Off" 
-						    data-wrapper-class="custom-label-flipswitch"
-						>
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="aut_display_on">Display On</label>
-					</div>
-					<div class="dispInline" >
-						<div id="aut_display_on">
-						</div>
-					</div>
+					<div data-role="fieldcontain">
+						<label for="text_head1" id="text_head1">System</label>
+					</div>					
 					<div class="clearFloats"></div>
 					<div class="dispInlineLabel" >
 						<label for="ntp_server">NTP server</label>		
 				    </div>   
 				    <div class="dispInline" >
-						<input type="text" name="ntp_server" id="ntp_server" minlength="1" maxlength="93" size="100">
-						<input id="btnNtpServer" type="button" data-inline="true" value="Set">
+						<input type="text" name="ntp_server" id="ntp_server" minlength="1" maxlength="93" size="20">
+						<input type="text" name="ntp_date_time" id="ntp_date_time" minlength="1" maxlength="93" size="20" disabled>						
 					</div>
 					<div class="clearFloats"></div>
 					<div class="dispInlineLabel" >
 						<label for="led_strip_nr_of_leds_corner">Nr. of LEDs/Corner</label>		
 				    </div>   
 				    <div class="dispInline" >
-						<input type="text" name="led_strip_nr_of_leds_corner" id="led_strip_nr_of_leds_corner" minlength="1" maxlength="1" size="2">
-						<input id="btnNrOfLedsCorner" type="button" data-inline="true" value="Set">
+						<input type="text" name="led_strip_nr_of_leds_corner" id="led_strip_nr_of_leds_corner" minlength="1" maxlength="1" size="20">
 					</div>
 					<div class="clearFloats"></div>
 					<div class="dispInlineLabel" >
 						<label for="led_strip_nr_of_leds">Total Nr. of LEDs</label>		
 				    </div>   
 				    <div class="dispInline" >
-						<input type="text" name="led_strip_nr_of_leds" id="led_strip_nr_of_leds" minlength="1" maxlength="3" size="4">
-						<input id="btnNrOfLeds" type="button" data-inline="true" value="Set">
+						<input type="text" name="led_strip_nr_of_leds" id="led_strip_nr_of_leds" minlength="1" maxlength="3" size="20">
 					</div>
+				    <div>
+						 <button type="button" id="btnSetLedsSettings" value="Set" class="save-restart">Save and restart </button> 
+					</div>					
+					<div class="line"></div>		
+					<div data-role="fieldcontain">
+						<label for="text_head1" id="text_head1">MQTT</label>
+					</div>
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="mqtt_host_name">MQTT Host</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="mqtt_host_name" id="mqtt_host_name" minlength="1" maxlength="20" size="20">
+					</div>  				
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="mqtt_port">MQTT Port</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="mqtt_port" id="mqtt_port" minlength="1" maxlength="10" size="20">
+					</div> 					
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="mqtt_user_name">MQTT User name</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="mqtt_user_name" id="mqtt_user_name" minlength="1" maxlength="20" size="20">
+					</div> 					
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="mqtt_user_password">MQTT User password</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="mqtt_user_password" id="mqtt_user_password" minlength="1" maxlength="20" size="20">
+					</div> 					
+					<div class="clearFloats"></div>
+					<div class="dispInlineLabel" >
+						<label for="mqtt_client_id">MQTT Client ID</label>		
+				    </div>   
+				    <div class="dispInline" >
+						<input type="text" name="mqtt_client_id" id="mqtt_client_id" minlength="1" maxlength="20" size="20">
+					</div> 
+					<div class="clearFloats"></div>					
+				    <div>
+						 <button type="button" id="btnSetMqtt" value="Set" class="save-restart">Save and restart </button> 
+					</div>					
 				</form>						
 			</div>  
 			<footer>
                 <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
             </footer>			
-		</div>
-		
+		</div>	
 		<div data-role="page" id="wifi">
 			<div data-role="header">
 				<h1 id="toptitle_wifi">Moodlite</h1>
@@ -677,11 +881,11 @@
 					</div>
 					<div data-role="fieldcontain">
 						<label for="password">Password</label>
-						<input type="password" name="password" id="password" maxlength="40">
+						<input type="password" name="password" id="password" maxlength="20">
 					</div>
 					<div data-role="fieldcontain">
 						<label for="hostname">Hostname</label>
-						<input type="text" name="hostname" id="hostname" maxlength="50">
+						<input type="text" name="hostname" id="hostname" maxlength="20">
 					</div>
 					<div data-role="fieldcontain">
 						<label for="wifi_set">&nbsp;</label>
@@ -694,6 +898,5 @@
                 <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
             </footer>			
 		</div>
-
 	</body>
 </html>

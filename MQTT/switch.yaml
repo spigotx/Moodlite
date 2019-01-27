@@ -1,0 +1,21 @@
+# Moodlite
+# Display On
+  - platform: mqtt
+    name: switch_moodlite_display_on_enabled
+    state_topic: "Moodlite/DisplayOnEnabled/Get"
+    command_topic: "Moodlite/DisplayOnEnabled/Set"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+# Display Off
+  - platform: mqtt
+    name: switch_moodlite_pir_sensor_enabled
+    state_topic: "Moodlite/PirSensorEndabled/Get"
+    command_topic: "Moodlite/PirSensorEndabled/Set"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true

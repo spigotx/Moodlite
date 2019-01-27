@@ -1,0 +1,16 @@
+# Include section
+input_number: !include input_number.yaml
+input_select: !include input_select.yaml
+group: !include groups.yaml
+switch: !include switch.yaml
+automation: !include automation.yaml
+light: !include light.yaml
+
+# MQTT config here.
+mqtt:
+  broker: MQTT_BROKER_IP
+  port: MQTT_BROKER_PORT
+  client_id: MQTT_BROKER_CLIENT_ID
+  keepalive: 60
+  username: MQTT_BROKER_USERNAME
+  password: MQTT_BROKER_PASSWORD

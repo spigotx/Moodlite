@@ -1,0 +1,24 @@
+# Groups
+  default_view:
+  moodlite:
+    name: Moodlite
+    control: hidden
+    entities:
+      - light.rgb_moodlite
+      - input_select.input_select_moodlite_pattern_color
+      - input_select.input_select_moodlite_patterns
+      - input_select.input_select_moodlite_fixed_patterns
+      - switch.switch_moodlite_display_on_enabled
+      - input_number.slider_moodlite_display_on
+      - input_number.slider_moodlite_display_off 
+      - switch.switch_moodlite_pir_sensor_enabled      
+      - input_number.slider_moodlite_speed
+#
+# Groups view
+#
+  Moodlite:
+    name: Moodlite
+    view: yes
+    icon: mdi:led-strip
+    entities:
+      - group.moodlite   

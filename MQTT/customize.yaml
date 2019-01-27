@@ -1,0 +1,39 @@
+#
+# Moodlite
+#
+ input_number.slider_moodlite_brightness:
+   friendly_name: Brightness
+   icon: mdi:brightness-6
+ input_number.slider_moodlite_speed:
+   friendly_name: Speed
+   icon: mdi:speedometer   
+ input_number.box_moodlite_pattern:
+   friendly_name: Pattern
+   icon: mdi:lock-pattern  
+ switch.switch_moodlite_backlight:
+   friendly_name: Backlight
+   icon: mdi:lightbulb-on
+ switch.switch_moodlite_display_on_enabled:
+   friendly_name: Automatic Display On Enabled
+   icon: mdi:lightbulb-on   
+ input_number.slider_moodlite_display_on:
+   friendly_name: Display On
+   icon: mdi:led-on
+ input_number.slider_moodlite_display_off:
+   friendly_name: Display Off
+   icon: mdi:led-off
+ light.rgb_moodlite:
+   friendly_name: LED
+   icon: mdi:led-strip
+ switch.switch_moodlite_pir_sensor_enabled:
+   friendly_name: Motion sensor
+   icon: mdi:account-arrow-right
+ input_select.input_select_moodlite_pattern_color:
+   friendly_name: Pattern color
+   icon: mdi:palette
+ input_select.input_select_moodlite_patterns:
+   friendly_name: Patterns
+   icon: mdi:lock-pattern
+ input_select.input_select_moodlite_fixed_patterns:   
+   friendly_name: Fixed patterns
+   icon: mdi:lock-pattern
