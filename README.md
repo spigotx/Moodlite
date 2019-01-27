@@ -33,6 +33,7 @@ This software uses the following open source packages:
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - Async TCP Library for ESP8266 Arduino
 * [Timezone](https://github.com/JChristensen/Timezone  ) - Arduino Timezone Library
 * [Timer](https://github.com/JChristensen/Timer/tree/v2.1  ) - Arduino Timer Library
+* [MQTT PubSubClient](https://github.com/knolleary/pubsubclient ) - MQTT Client Library
 
 ## Change log
 
