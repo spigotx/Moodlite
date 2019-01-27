@@ -108,8 +108,8 @@
 #endif
 
 // --- RGB LED ---
-//#define LED_PIN				6      // NodeMCU PIN s	
-#define LED_PIN				D5      // Wemos PIN D1
+#define LED_PIN				6      // NodeMCU PIN s	
+//#define LED_PIN				D5      // Wemos PIN D1
 
 // LEDs settings
 #define MAX_NUM_LEDS		253
