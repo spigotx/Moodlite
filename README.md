@@ -40,8 +40,10 @@ See the [CHANGELOG.md](CHANGELOG.md) file for details.
 
 ## Authors
 
-* **Steve Wagg** - *Initial work* - [CdRsKuLL](https://github.com/...)
 * **M.V.** - [Spigot](https://github.com/spigotx)
+* **shiryou** - [shiryou83](https://github.com/shiryou83)
+* **Steve Wagg** - *Initial work* - [CdRsKuLL](https://github.com/...)
+
 
 ## License
 
