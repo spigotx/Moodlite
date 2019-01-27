@@ -286,7 +286,7 @@ extern CRGBPalette16 myRedWhiteBluePalette;
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void(*SimplePatternList[])();
-SimplePatternList gPatterns = { fullColor, standard, confetti, sinelon, juggle, bpm, kitt, plasma, blendwave, inoise8_fire, rainbow_beat, rainbow, rainbowWithGlitter};
+SimplePatternList gPatterns = { &fullColor, &standard, &confetti, &sinelon, &juggle, &bpm, &kitt, &plasma, &blendwave, &inoise8_fire, &rainbow_beat, &rainbow, &rainbowWithGlitter };
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 
