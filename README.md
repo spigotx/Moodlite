@@ -1,4 +1,12 @@
 # Moodlite
+<p align="center">
+	<a>
+		<img src="https://img.shields.io/badge/coverage-95%25-blue.svg?maxAge=259200"
+		    alt="coverage"></a>
+	<a>
+		<img src="https://img.shields.io/badge/version-2.0-green.svg?maxAge=2592000"
+		    alt="version"></a>	
+</p>
 
 ![alt text](_files/moodlite.png)
 
