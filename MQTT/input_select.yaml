@@ -1,5 +1,5 @@
 #
-# Moodlite
+# moodlite
 # 
 # # Pattern color
  input_select_moodlite_pattern_color:
@@ -30,10 +30,35 @@
      - KITT
      - Plasma
      - Fire Stripes
+     - Standard tile
+     - Beatwave
+     - Inoise
+     - Mover
+     - Noise1
+     - Noise2
+     - Noise3
+     - Three sin
    initial: Select ...
+# Patterns - Tile mode
+ input_select_moodlite_patterns_tile:
+   name: Patterns
+   options:
+     - Select ...
+     - Standard Tiles
+     - BPM Tiles
+     - KITT Tiles
+     - Plasma Tiles
+     - Beatwave Tiles
+     - Inoise Tiles
+     - Mover Tiles
+     - Noise1 Tiles
+     - Noise2 Tiles
+     - Noise3 Tiles
+     - Three sin Tiles
+   initial: Select ...   
 # Fixed patterns   
  input_select_moodlite_fixed_patterns:
-   name: Patterns
+   name: Fixed Patterns
    options:
      - Select ...
      - Confetti
@@ -43,4 +68,38 @@
      - Rainbow Beat
      - Full Rainbow
      - Rainbow With Glitter
+     - Blur
+     - Fill gradient
    initial: Select ...   
+# Fixed patterns - Tile mode
+ input_select_moodlite_fixed_patterns_tile:
+   name: Fixed Patterns
+   options:
+     - Select ...
+     - Confetti Tiles
+     - Sinelon Tiles
+     - Juggle Tiles
+   initial: Select ...      
+# Effect
+ input_select_moodlite_effect:
+   name: Effect
+   options:
+     - Select ...
+     - Glitter
+     - Dot beat
+   initial: Select ...     
+# PIR display On time
+ input_select_moodlite_pir_display_on_time:
+   name: Motion sensor Display On time
+   options:
+     - 1
+     - 2
+     - 3
+     - 4
+     - 5
+     - 6
+     - 7
+     - 8
+     - 9
+     - 10
+   initial: 1

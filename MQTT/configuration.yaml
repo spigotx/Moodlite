@@ -1,3 +1,7 @@
+# Lovelace
+lovelace:
+  mode: yaml
+
 # Include section
 input_number: !include input_number.yaml
 input_select: !include input_select.yaml

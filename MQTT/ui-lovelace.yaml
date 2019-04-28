@@ -1,0 +1,56 @@
+title: Home Assitant
+# Include external resources
+resources: 
+  - url: /local/custom_ui/vertical-stack-in-card.js?v=0.1.2
+    type: js      
+    
+# Optional background for all views. Check https://developer.mozilla.org/en-US/docs/Web/CSS/background for more examples.
+background: center / cover no-repeat url("/background.png") fixed
+# Exclude entities from "Unused entities" view
+excluded_entities:
+  - weblink.router
+views:
+  - icon: mdi:home-assistant
+    title: Main view
+    cards:  
+      - type: vertical-stack  
+        title: moodlite 
+        show_header_toggle: false 
+        cards:
+        - type: conditional
+          conditions:
+            - entity: switch.switch_moodlite_display_mode
+              state: "off"
+          card:
+            type: entities
+            title: moodlite 
+            show_header_toggle: false                
+            entities:
+              - light.rgb_moodlite   
+              - input_select.input_select_moodlite_pattern_color
+              - input_select.input_select_moodlite_patterns
+              - input_select.input_select_moodlite_fixed_patterns
+              - input_select.input_select_moodlite_effect
+        - type: conditional
+          conditions:
+            - entity: switch.switch_moodlite_display_mode
+              state: "on"
+          card:
+            type: entities
+            title: moodlite 
+            show_header_toggle: false                
+            entities:
+              - light.rgb_moodlite   
+              - input_select.input_select_moodlite_pattern_color
+              - input_select.input_select_moodlite_patterns_tile
+              - input_select.input_select_moodlite_fixed_patterns_tile
+              - input_select.input_select_moodlite_effect
+        - type: entities  
+          entities: 
+            - switch.switch_moodlite_display_mode
+            - switch.switch_moodlite_display_on_enabled
+            - input_number.slider_moodlite_display_on
+            - input_number.slider_moodlite_display_off 
+            - switch.switch_moodlite_pir_sensor_enabled
+            - input_select.input_select_moodlite_pir_display_on_time
+            - input_number.slider_moodlite_speed

@@ -1,3 +1,6 @@
+#
+# moodlite
+#
  slider_moodlite_speed:
    name: Speed
    initial: 50

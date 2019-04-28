@@ -1,8 +1,10 @@
 # Automation events
-#      
-# Moodlite
+#    
+# moodlite
 # 
 # Speed
+  # Runs when a value is received via MQTT
+  # It sets the value slider on the GUI
   - alias: slider_moodlite_speed_set
     trigger:
       platform: mqtt
@@ -12,6 +14,8 @@
       data_template:
         entity_id: input_number.slider_moodlite_speed
         value: "{{ trigger.payload }}"
+  # This second automation script runs when the target temperature slider is moved.
+  # It publishes its value to the same MQTT topic it is also subscribed to.        
   - alias: slider_moodlite_speed_move
     trigger:
       platform: state
@@ -20,9 +24,11 @@
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/Speed/Set'
-        retain: true
+        retain: false
         payload: "{{ states('input_number.slider_moodlite_speed') | int }}"        
 # Display On
+  # Runs when a value is received via MQTT
+  # It sets the value slider on the GUI
   - alias: slider_moodlite_display_on_set
     trigger:
       platform: mqtt
@@ -32,6 +38,8 @@
       data_template:
         entity_id: input_number.slider_moodlite_display_on
         value: "{{ trigger.payload }}"
+  # This second automation script runs when the target temperature slider is moved.
+  # It publishes its value to the same MQTT topic it is also subscribed to.            
   - alias: slider_moodlite_display_on_move
     trigger:
       platform: state
@@ -40,7 +48,7 @@
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/DisplayOn/Set'
-        retain: true
+        retain: false
         payload: "{{ states('input_number.slider_moodlite_display_on') | int }}"
 # Display Off
   - alias: slider_moodlite_display_off_set
@@ -60,8 +68,8 @@
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/DisplayOff/Set'
-        retain: true
-        payload: "{{ states('input_number.slider_moodlite_display_off') | int }}"                 
+        retain: false
+        payload: "{{ states('input_number.slider_moodlite_display_off') | int }}"               
 # Pattern color
   - alias: input_select_moodlite_pattern_color_change
     trigger:
@@ -71,7 +79,7 @@
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/PatternColor/Set'
-        retain: true
+        retain: false
         payload: >-
           {% if states.input_select.input_select_moodlite_pattern_color.state == "Select ..." %}0
           {% elif states.input_select.input_select_moodlite_pattern_color.state == "Cloud" %}1
@@ -119,7 +127,7 @@
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/Pattern/Set'
-        retain: true
+        retain: false
         payload: >-
           {% if states.input_select.input_select_moodlite_patterns.state == "Select ..." %}0
           {% elif states.input_select.input_select_moodlite_patterns.state == "Fixed" %}1
@@ -128,6 +136,14 @@
           {% elif states.input_select.input_select_moodlite_patterns.state == "KITT" %}4
           {% elif states.input_select.input_select_moodlite_patterns.state == "Plasma" %}5
           {% elif states.input_select.input_select_moodlite_patterns.state == "Fire Stripes" %}6         
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Standard tile" %}7              
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Beatwave" %}8
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Inoise" %}9
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Mover" %}10
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Noise1" %}11
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Noise2" %}12
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Noise3" %}13
+          {% elif states.input_select.input_select_moodlite_patterns.state == "Three sin" %}14          
           {% endif %}     
   - alias: input_select_moodlite_patterns_set
     trigger:
@@ -145,17 +161,74 @@
           {% elif trigger.payload == "4" %}KITT
           {% elif trigger.payload == "5" %}Plasma
           {% elif trigger.payload == "6" %}Fire Stripes
-          {% endif %}                    
+          {% elif trigger.payload == "7" %}Standard tile          
+          {% elif trigger.payload == "8" %}Beatwave
+          {% elif trigger.payload == "9" %}Inoise
+          {% elif trigger.payload == "10" %}Mover
+          {% elif trigger.payload == "11" %}Noise1
+          {% elif trigger.payload == "12" %}Noise2
+          {% elif trigger.payload == "13" %}Noise3
+          {% elif trigger.payload == "14" %}Three sin          
+          {% endif %}
+# Pattern - Tile mode
+  - alias: input_select_moodlite_patterns_tile_change
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_patterns_tile   
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/Pattern/Set'
+        retain: false
+        payload: >-
+          {% if states.input_select.input_select_moodlite_patterns_tile.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Standard Tiles" %}7
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "BPM Tiles" %}15
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "KITT Tiles" %}16
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Plasma Tiles" %}17
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Beatwave Tiles" %}18
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Inoise Tiles" %}19
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Mover Tiles" %}20
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Noise1 Tiles" %}21
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Noise2 Tiles" %}22
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Noise3 Tiles" %}23
+          {% elif states.input_select.input_select_moodlite_patterns_tile.state == "Three sin Tiles" %}24          
+          {% endif %}     
+  - alias: input_select_moodlite_patterns_tile_set
+    initial_state: true
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/Pattern/Get'    
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_patterns_tile
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "7" %}Standard Tiles
+          {% elif trigger.payload == "15" %}BPM Tiles
+          {% elif trigger.payload == "16" %}KITT Tiles
+          {% elif trigger.payload == "17" %}Plasma Tiles
+          {% elif trigger.payload == "18" %}Beatwave Tiles
+          {% elif trigger.payload == "19" %}Inoise Tiles
+          {% elif trigger.payload == "20" %}Mover Tiles
+          {% elif trigger.payload == "21" %}Noise1 Tiles
+          {% elif trigger.payload == "22" %}Noise2 Tiles
+          {% elif trigger.payload == "23" %}Noise3 Tiles
+          {% elif trigger.payload == "24" %}Three sin Tiles
+          {% endif %}             
 # Fixed pattern
   - alias: input_select_moodlite_fixed_patterns_change
     trigger:
       platform: state
       entity_id: input_select.input_select_moodlite_fixed_patterns    
+    # Set fixed pattern value
     action:
       service: mqtt.publish
       data_template:
         topic: 'Moodlite/FixedPattern/Set'
-        retain: true
+        retain: false
         payload: >-
           {% if states.input_select.input_select_moodlite_fixed_patterns.state == "Select ..." %}0
           {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Confetti" %}100
@@ -165,6 +238,8 @@
           {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Rainbow Beat" %}104
           {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Full Rainbow" %}105       
           {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Rainbow With Glitter" %}106
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Blur" %}107
+          {% elif states.input_select.input_select_moodlite_fixed_patterns.state == "Fill gradient" %}108
           {% endif %}                
   - alias: input_select_moodlite_fixed_patterns_set
     trigger:
@@ -183,4 +258,94 @@
           {% elif trigger.payload == "104" %}Rainbow Beat
           {% elif trigger.payload == "105" %}Full Rainbow       
           {% elif trigger.payload == "106" %}Rainbow With Glitter 
-          {% endif %}            
+          {% elif trigger.payload == "107" %}Blur
+          {% elif trigger.payload == "108" %}Fill gradient
+          {% endif %}       
+# Fixed pattern - Tile mode
+  - alias: input_select_moodlite_fixed_patterns_tile_change
+    initial_state: true
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_fixed_patterns_tile    
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/FixedPattern/Set'
+        retain: false
+        payload: >-
+          {% if states.input_select.input_select_moodlite_fixed_patterns_tile.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_fixed_patterns_tile.state == "Confetti Tiles" %}109
+          {% elif states.input_select.input_select_moodlite_fixed_patterns_tile.state == "Sinelon Tiles" %}110
+          {% elif states.input_select.input_select_moodlite_fixed_patterns_tile.state == "Juggle Tiles" %}111
+          {% endif %}                
+  - alias: input_select_moodlite_fixed_patterns_tile_set
+    initial_state: true
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/FixedPattern/Get' 
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_fixed_patterns_tile
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "109" %}Confetti Tiles
+          {% elif trigger.payload == "110" %}Sinelon Tiles
+          {% elif trigger.payload == "111" %}Juggle Tiles
+          {% endif %}              
+# Effect
+  - alias: input_select_moodlite_effect_change
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_effect
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/Effect/Set'
+        retain: false
+        payload: >-
+          {% if states.input_select.input_select_moodlite_effect.state == "Select ..." %}0
+          {% elif states.input_select.input_select_moodlite_effect.state == "Glitter" %}1000
+          {% elif states.input_select.input_select_moodlite_effect.state == "Dot beat" %}1001
+          {% elif states.input_select.input_select_moodlite_effect.state == "Lightnings" %}1002
+          {% elif states.input_select.input_select_moodlite_effect.state == "Meteor shower" %}1003
+          {% endif %}                
+  - alias: input_select_moodlite_effect_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/Effect/Get' 
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_effect
+        option: >-
+          {% if trigger.payload == "0" %}Select ...
+          {% elif trigger.payload == "1000" %}Glitter
+          {% elif trigger.payload == "1001" %}Dot beat
+          {% elif trigger.payload == "1002" %}Lightnings
+          {% elif trigger.payload == "1003" %}Meteor shower
+          {% endif %}          
+# PIR Display On time
+  # Runs when a value is received via MQTT
+  # It sets the value slider on the GUI
+  - alias: input_select_moodlite_pir_display_on_time_set
+    trigger:
+      platform: mqtt
+      topic: 'Moodlite/PirSensorDisplayOnTime/Get'
+    action:
+      service: input_select.select_option
+      data_template:
+        entity_id: input_select.input_select_moodlite_pir_display_on_time
+        option: "{{ trigger.payload }}"
+  # This second automation script runs when the target temperature slider is moved.
+  # It publishes its value to the same MQTT topic it is also subscribed to.        
+  - alias: input_select_moodlite_pir_display_on_time_change
+    trigger:
+      platform: state
+      entity_id: input_select.input_select_moodlite_pir_display_on_time
+    action:
+      service: mqtt.publish
+      data_template:
+        topic: 'Moodlite/PirSensorDisplayOnTime/Set'
+        retain: false
+        payload: "{{ states('input_select.input_select_moodlite_pir_display_on_time') }}"

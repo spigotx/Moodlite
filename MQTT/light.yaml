@@ -1,4 +1,6 @@
-# Moodlite
+#
+# moodlite
+#
   - platform: mqtt
     name: rgb_moodlite
     brightness_state_topic: "Moodlite/Brightness/Get"
@@ -9,7 +11,6 @@
     payload_off: "0"
     rgb_state_topic: "Moodlite/Color/Get"
     rgb_command_topic: "Moodlite/Color/Set"
-    rgb: true
     optimistic: false
     qos: 0
-    retain: true
+    retain: false

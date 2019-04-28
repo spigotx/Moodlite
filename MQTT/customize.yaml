@@ -1,5 +1,5 @@
 #
-# Moodlite
+# moodlite
 #
  input_number.slider_moodlite_brightness:
    friendly_name: Brightness
@@ -10,6 +10,9 @@
  input_number.box_moodlite_pattern:
    friendly_name: Pattern
    icon: mdi:lock-pattern  
+ switch.switch_moodlite_display_mode:
+   friendly_name: Display mode
+   icon: mdi:book-open 
  switch.switch_moodlite_backlight:
    friendly_name: Backlight
    icon: mdi:lightbulb-on
@@ -28,12 +31,24 @@
  switch.switch_moodlite_pir_sensor_enabled:
    friendly_name: Motion sensor
    icon: mdi:account-arrow-right
+ input_select.input_select_moodlite_pir_display_on_time:
+   friendly_name: Motion sensor Display On time (min)
+   icon: mdi:av-timer 
  input_select.input_select_moodlite_pattern_color:
    friendly_name: Pattern color
    icon: mdi:palette
  input_select.input_select_moodlite_patterns:
-   friendly_name: Patterns
+   friendly_name: Patterns - LED
    icon: mdi:lock-pattern
+ input_select.input_select_moodlite_patterns_tile:
+   friendly_name: Patterns - Tiles
+   icon: mdi:lock-pattern   
  input_select.input_select_moodlite_fixed_patterns:   
-   friendly_name: Fixed patterns
+   friendly_name: Fixed patterns - LED
    icon: mdi:lock-pattern
+ input_select.input_select_moodlite_fixed_patterns_tile:   
+   friendly_name: Fixed patterns - Tiles
+   icon: mdi:lock-pattern   
+ input_select.input_select_moodlite_effect:   
+   friendly_name: Individual effects
+   icon: mdi:border-none   

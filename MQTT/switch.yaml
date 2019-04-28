@@ -1,4 +1,6 @@
-# Moodlite
+#
+# moodlite
+#
 # Display On
   - platform: mqtt
     name: switch_moodlite_display_on_enabled
@@ -8,8 +10,8 @@
     payload_off: "0"
     optimistic: false
     qos: 0
-    retain: true
-# Display Off
+    retain: false
+# PIR Sensor
   - platform: mqtt
     name: switch_moodlite_pir_sensor_enabled
     state_topic: "Moodlite/PirSensorEndabled/Get"
@@ -18,4 +20,14 @@
     payload_off: "0"
     optimistic: false
     qos: 0
-    retain: true
+    retain: false
+# Display mode
+  - platform: mqtt
+    name: switch_moodlite_display_mode
+    state_topic: "Moodlite/DisplayMode/Get"
+    command_topic: "Moodlite/DisplayMode/Set"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: false       

@@ -1,902 +1,933 @@
 <!DOCTYPE html>
-<html>  
-    <head>
-        <title>Moodlite</title>
-		<!- Favicon ->
+<html>
+    <head>        
+    	<title>moodlite</title>
+		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 		
-		<!- Meta data ->
-		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-    	
-		<!- JS ->
-		<!- jquery ->
-		<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-      	<!- Color picker ->
-		<script type="text/javascript" src="js/colorpicker.js"></script>
-		<!- Round slider ->
-		<script type="text/javascript" src="js/roundslider.min.js"></script>
-    
-    	<!- CSS ->
-		<!- jquery ->
-		<link href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">                                  
-		<!- Color picker ->
-        <link href="css/colorpicker.css" rel="stylesheet" type="text/css">
-		<!- Round slider ->
-		<link href="css/roundslider.min.css" rel="stylesheet" type="text/css">
-	
-		<style type="text/css">
-			.dispInline, .dispInlineLabel, .dispInlineButton, .dispInlineSelectmenu, .dispInlineSlider{
-				display: inline-block;
-				border-bottom-width:0;
-			}
-			.dispInline{
-				min-width: 150px;
-				vertical-align: middle;
-			}			
-			.dispInlineLabel{
-				min-width: 340px;
-				vertical-align: middle;
-			}
-			.dispInlineButton{
-				min-width: 150px;
-				vertical-align: middle;
-				width: 65%;
-			}	
-			.dispInlineSelectmenu{
-				min-width: 230px;
-				vertical-align: middle;
-			}				
-			.dispInlineSlider{
-				min-width: 150px;
-				vertical-align: middle;
-				width: 75%;
-			}	
-			
-			.clearFloats{
-				clear:both;
-			}
-            .bottom-three {
-             margin-bottom: 1cm;
-            }			
+		<!-- Meta data -->
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" charset="UTF-8">
+        <!-- Refresh every 30s -->
+        <!-- <meta HTTP-EQUIV="refresh" CONTENT="300"> -->
 
-			/* Style override */      
-			/* Main module */      
-			.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit {
-				background-color: #333333;
-				color: #d0d0d0;
-				text-shadow: 0 1px 0 #333333;
-			}
-
-			/* Sheet button */
-			.ui-header .ui-title ~ .ui-navbar .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-btn, .ui-header .ui-navbar .ui-grid-duo .ui-btn, .ui-footer .ui-navbar .ui-grid-duo .ui-btn, .ui-header .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child .ui-btn, .ui-header .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child + .ui-block-b .ui-btn, .ui-footer .ui-title ~ .ui-navbar .ui-grid-duo .ui-block-a:first-child + .ui-block-b .ui-btn {
-				border-color: #ddd;
-			}
-
-			.ui-header .ui-title, .ui-footer .ui-title {
-				font-size: 1.2em;
-			}
-
-			/* Sheet */      
-			.ui-page-theme-a .ui-btn.ui-btn-active {
-				  background: #333333;
-			}
-			/* Flip switch */
-			.ui-flipswitch {
-				
-			}	
-				
-			/* Slider Input */
-			input.ui-slider-input {
-				width: 45px;
-			}
-
-			/*
-			// Input text
-			.ui-field-contain {
-				width: 50%;			
-			}
-			*/
-			
-			/* Save and restart button */
-			.save-restart {
-              display: block;
-              width: 100%;
-              border: none;
-              background-color: #4CAF50;
-              padding: 14px 28px;
-              font-size: 16px;
-              cursor: pointer;
-              text-align: center;
-            }
-
-			/* Settings */
-			.rs-control .rs-range-color {	
-				background: #333333; 
-			}  
-
-			.rs-control .rs-path-color {
-				background-color: #e9e9e9;
-			}
-
-			.rs-control .rs-handle {
-				background-color: #f6f6f6;
-				border: 2px solid #d0d0d0;   
-			}
-
-			.rs-tooltip-text {
-				font-size: 16px;
-			}
-
-			.rs-tooltip.hover {
-				background-color: #e9e9e9;
-			}
-  				
-			div.line{
-				transform-origin: 0 100%;
-				height: 1px; /* Line width of 3 */
-				background: #000; /* Black fill */
-			}
-
-			#text_head1 {
-				font-size: 20px;
-				font-weight: bold;
-			}
-			#text_head2 {
-				font-size: 16px;
-				font-weight: bold;
-			}
-			
-		   footer {
-                position: relative;
-                height: 40px;
-                width: 100%;
-                background-color: #333333;
-            }
+        <!-- Style sheets -->	
+		<!-- Bootstrap stylesheet -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" crossorigin="anonymous"/>
         
-            p.copyright {
-                position: absolute;
-                width: 100%;
-                color: #fff;
-                line-height: 10px;
-                font-size: 0.7em;
-                text-align: center;
-                bottom:0;
-            }
-		</style>
-		<script>
-			var serverSetting = false;
-			
-			function updateElements(values) {
-				serverSetting = true;
-				
-				var displayOn = values["display_on"];
-				
-				if (typeof displayOn != 'undefined') {
-					$('#aut_display_on').roundSlider("setValue", displayOn, 1);
-					delete values["display_on"];
-				}
-				
-				var displayOff = values["display_off"];
-				
-				if (typeof displayOff != 'undefined') {
-					$('#aut_display_on').roundSlider("setValue", displayOff, 2);
-					delete values["display_off"];
-				}
-		 
-				Object.keys(values).forEach(function(key, index) {
-					var element = $('#' + key);
-					var elType = element.attr('type');
-					
-					//console.log(elType); 
-					
-					if (elType == "checkbox") {
-						element.prop("checked", this[key]);
-						element.flipswitch("refresh");
-					} 
-					else if (elType == "selectmenu") {
-						element.val(this[key]);
-						element.selectmenu("refresh");
-					}
-					else {
-						if (key == "cycle_time") {
-							element.val(this[key] * 6);
-						} 
-						else {
-							element.val(this[key]);
-						}
-						if (elType == "number") {
-							element.slider("refresh");					
-						}
-					}
-				}, values);
-				serverSetting = false;
-			}
-			
-			function updateStatus(msg) {
-				//var oldMsg = $("#status").text()
-				//var newMsg = oldMsg + msg
-				$("#status").html(msg.replace(/\r\n/g, '<br />'))		
-				//$("#status").html($("#status").text() + msg.replace(/_rn_/g, '<br>'));
-			}
-			
-			function url(s) {
-				var l = window.location;
-				return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + s;
-			}
-
-			function getElementValue(element) {
-				element = $(element);
-				var elType = element.attr('type');
-				if (elType == "checkbox") {
-					return element.prop("checked");
-				} else {
-					return element.val();
-				}
-			}
-			
-			function elementBlur(element) {
-				if (serverSetting) {
-					return;
-				}
-				var value = getElementValue(element);
-				if (element.id == "cycle_time") {
-					value = value / 6;
-				}
-				var msg = '5:' + element.id + ':'+ value;
-				sendMsg(msg);
-			}
-			
-			function elementChange(element) {
-				if (serverSetting) {
-					return;
-				}
-				var value = getElementValue(element);
-				if (element.id == "cycle_time") {
-					value = value / 6;
-				}
-				
-				var msg = '5:' + element.id + ':'+ value;
-				sendMsg(msg);
-			}
-			
-			function pageRefresh(activePage){
-				switch (activePage) {
-					case 'wifi': 
-						sendMsg('1:'); 
-						break;
-					case 'settings': 
-						sendMsg('2:'); 			
-						break;
-					case 'leds': 
-						sendMsg('3:'); 	
-						break;	
-				}		
-			} ;
-			
-			var ws;
-
-			ws = new WebSocket(url("/ws"));
-
-			// subscribe to visibility change events
-			document.addEventListener('visibilitychange', function() {
-				// fires when app transitions from prerender, user returns to the app / tab.
-				if (document.visibilityState == 'visible') { 
-					if (!ws || !(ws.readyState == WebSocket.OPEN || ws.readyState == WebSocket.CONNECTING)) {
-						ws = new WebSocket(url("/ws"));
-					}
-				}
-			});
-			
-			ws.onopen = function(event) {
-				try {
-					pageRefresh($(".ui-page-active").attr("id"));
-				} catch (e) {			
-					(console.error || console.log).call(console, e.stack || e);
-				}
-			}
-			
-			ws.onmessage= function(event) {
-			  var msg = JSON.parse(event.data);
-			  
-			  switch(msg.type) {
-				case "sv.update":
-				case "sv.init.wifi":		// Received initialization object
-				case "sv.init.settings":	// Received initialization object
-				case "sv.init.leds":		// Received initialization object	   
-					updateElements(msg.value);
-					break;						
-				case "sv.status":			// Received initialization object	
-					updateStatus(msg.value);
-					break;
-			  }
-			};
-
-			function sendMsg(msg) {
-				console.log(msg);
-				try {
-					ws.send(msg);
-				} catch (e) {
-					console.log(e.stack || e);
-				}
-			}
-			
-			// Draw horizontal line
-			function createLine(x1,y1, x2,y2){
-				var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-				var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-				var transform = 'rotate('+angle+'deg)';
-
-				var line = $('<div>')
-					.appendTo('#page')
-					.addClass('line')
-					.css({
-						'position': 'absolute',
-						'transform': transform
-					})
-					.width(length)
-					.offset({left: x1, top: y1});
-
-				return line;
-			}
-						
-			// ------ Page ------
-			// On page load
-			$(document).ready(function () {
-				$(document).on('pagecontainerbeforechange', function(event, ui) {
-				    // --- Sliders ---
-					// Automatic display On/Off time
-					$.fn.roundSlider.prototype._invertRange = true;
-					$('#aut_display_on').roundSlider({
-						sliderType: "range",
-						//showTooltip: false,
-						radius: 60,
-						width: 20,
-						min: 0,
-						max: 24,
-						step: 1,
-						value: "8,22",
-						startAngle: 0,
-						endAngle: "+360",
-						handleSize: "+8",
-
-						change: function(e) {
-							if (serverSetting) {
-								return;
-							}
-
-							var values = e.value.split(',');
-							var msg = '5:display_on:'+ values[0];
-							sendMsg(msg);
-							msg = '5:display_off:'+ values[1];
-							sendMsg(msg);
-						}
-					});	
-						
-					pageRefresh(ui.toPage[0].id);	
-				});					
-
-				// Load LEDs data
-				pageRefresh('leds');				
-
-				// ------ Objects ------
-				// --- Sliders ---
-				// Automatic display On/Off time
-				$.fn.roundSlider.prototype._invertRange = true;
-				$('#aut_display_on').roundSlider({
-					sliderType: "range",
-					//showTooltip: false,
-					radius: 60,
-					width: 20,
-					min: 0,
-					max: 24,
-					step: 1,
-					value: "8,22",
-					startAngle: 0,
-					endAngle: "+360",
-					handleSize: "+8",
-
-					change: function(e) {
-						if (serverSetting) {
-							return;
-						}
-
-						var values = e.value.split(',');
-						var msg = '5:display_on:'+ values[0];
-						sendMsg(msg);
-						msg = '5:display_off:'+ values[1];
-						sendMsg(msg);
-					}
-				});				
-				
-				// Brightness slider settings/events
-				$('#led_strip_brightness').slider({						
-					// Run code if slider value changes
-					slide: function( event, ui ) {
-					},
-					// Run code if slider released
-					stop: function(event, ui) {
-						elementChange(this);
-					}							
-				});
-
-				// Speed slider settings/events
-				$('#led_strip_speed').slider({						
-					// Run code if slider value changes
-					slide: function( event, ui ) {
-					},
-					// Run code if slider released
-					stop: function(event, ui) {
-						elementChange(this);
-					}							
-				});
-				
-				// --- Color pickers ---
-				// LEDs color picker
-				$('#colorpickerfield_led_strip').ColorPicker({
-					onSubmit: function(hsb, hex, rgb, el, parent) {
-						$(el).val(hex);
-						$(el).ColorPickerHide();
-						elementChange(el);						
-					},
-					onBeforeShow: function () {
-						$(this).ColorPickerSetColor(this.value);
-					}
-				})
-				.on('keyup', function(){
-					$(this).ColorPickerSetColor(this.value);
-				});	
-                
-				
-				// --- Buttons ---
-				// Set LED Properties button
-				$('#btnSetLedsSettingsProp').click(function(){
-					var msg = '5:saveDefaultValues:1';
-					sendMsg(msg);
-				});
-				
-				// Set LED Settings
-				$('#btnSetLedsSettings').click(function(){
-				    $(document.body).css({'cursor' : 'wait'});
-				    
-					var value = $('#ntp_server').val();
-					var msg = '5:setNtpServer:' + value;
-				
-					sendMsg(msg);
-           			value = $('#led_strip_nr_of_leds_corner').val();
-		    		msg = '5:setNrOfLedsCorner:' + value;
-			    	sendMsg(msg);
-
-				    value = $('#led_strip_nr_of_leds').val();
-				    msg = '5:setNrOfLeds:' + value;
-				    sendMsg(msg);
-                    
-                    // Call save values
-   					msg = '5:saveLedsSettings:1';
-   					sendMsg(msg);
-				
-					// Call restart
-					setTimeout(function() {                           
-						msg = '5:restart:1';
-						sendMsg(msg);
-                    }, 2000)
-                    
-                    // Reload page after 10s
-					setTimeout(function() {
-                        location.reload();
-                    }, 12000)
-				}); 
-				
-				// Set MQTT parameters
-				$('#btnSetMqtt').click(function(){
-				    $(document.body).css({'cursor' : 'wait'});
-				    
-					var value = $('#mqtt_host_name').val();
-					var msg = '5:setMqttHostName:' + value;
-				
-					sendMsg(msg);
-
-					value = $('#mqtt_port').val();
-					msg = '5:setMqttPort:' + value;
-					sendMsg(msg);
-
-					value = $('#mqtt_user_name').val();
-					msg = '5:setMqttUserName:' + value;
-					sendMsg(msg);
-				
-					value = $('#mqtt_user_password').val();
-					msg = '5:setMqttUserPassword:' + value;
-					sendMsg(msg);						
-
-					value = $('#mqtt_client_id').val();
-					msg = '5:setMqttClient:' + value;
-					sendMsg(msg);
-
-                    // Call save values
-   					msg = '5:saveMqttSettings:1';
-   					sendMsg(msg);
-                    
-					// Call restart
-					setTimeout(function() {                            
-						msg = '5:restart:1';
-						sendMsg(msg);
-                    }, 2000)
-                    
-                    // Reload page after 10s
-					setTimeout(function() {
-                        location.reload();
-                    }, 12000)
-				}); 				
-
-				// --- Select menu ---
-				// Pattern color
-				$("#pattern_color").on("change",function(){
-					var value = $('#pattern_color').selectmenu('widget').find('option:selected').val()
-					var msg = '5:patterncolor:'+ value;
-					sendMsg(msg);
-                });
-                
-                // Patterns
-				$("#patterns").on("change",function(){
-					var value = $('#patterns').selectmenu('widget').find('option:selected').val()
-					var msg = '5:pattern:'+ value;
-					sendMsg(msg);
-					
-					// Clear Fixed pattern selector
-					$("#fixed_patterns").val(0);
-					$("#fixed_patterns").selectmenu("refresh");
-                });
-
-                // Fixed pattern
-				$("#fixed_patterns").on("change",function(){
-					var value = $('#fixed_patterns').selectmenu('widget').find('option:selected').val()
-					var msg = '5:fixedpattern:'+ value;
-					sendMsg(msg);
-					
-					// Clear Pattern selector
-					$("#patterns").val(0);
-					$("#patterns").selectmenu("refresh");
-                });      
-			});
+		<!-- Bootstrap slider : https://github.com/seiyria/bootstrap-slider -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/css/bootstrap-slider.min.css" crossorigin="anonymous"/>
+        
+		<!-- Pickr : https://simonwep.github.io/pickr/ -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css" crossorigin="anonymous"/>		
 		
-			// ------ Data ------
-			var wifiData = {
-				type: "sv.init.wifi",
-				value: {
-					ssid: "ssid",
-					password: "password",
-					hostname: "hostname"
-				}
-			};
-			
-			var statusData = {
-				type: "sv.status",
-				value: ""
-			};
-			
-			var settingsData = {
-				type: "sv.init.settings",
-				value: {
-					ntp_server: "",
-					ntp_date_time: "",						
-					led_strip_nr_of_leds_corner: 1,						
-					led_strip_nr_of_leds: 3, 
-					mqtt_host_name: "",
-					mqtt_port: "",
-					mqtt_user_name: "",
-					mqtt_user_password: "",
-					mqtt_client_id: ""
-				}
-			};
-				
-			var ledsData = {
-				type: "sv.init.leds",
-				value: {
-		    		pattern_color: 0,
-					patterns: 0,
-					fixed_patterns: 0,
-					aut_display_enabled: true,
-					display_on: 5,
-					display_off: 22,
-					backlight: true,
-					pir_sensor_endabled: false,
-					allow_led_params_mod: false,
-					colorpickerfield_led_strip: "00ff00",												
-					led_strip_brightness: 15,
-					led_strip_speed: 20
-				}
-			};			
-		</script>
-	</head>
-	<body>
-		<div data-role="page" id="leds">
-			<div data-role="header">
-				<h1 id="toptitle_led">Moodlite</h1>
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a class="ui-btn-active ui-state-persist">LEDs</a>
-						</li>		
-						<li>
-							<a href="#settings">Settings</a>
+		<!-- Main stylesheet -->
+		<link rel="stylesheet" href="css/main_form.css"/>			
+    </head>
+    <body>
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow"><a class="navbar-brand col-sm-2 col-md-2 mr-0" href="#">moodlite</a></nav>
+        <div class="container-fluid">
+            <div class="row">
+                <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+                	<ul class="nav nav-tabs d-flex flex-wrap flex-md-nowrap pt-5" id="pills-tab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link text-secondary active" data-toggle="pill" href="#pills-leds" role="tab" aria-controls="pills-leds" aria-selected="true" id="pills-leds-tab" data-id="leds">LEDs</a>
 						</li>
-						<li>
-							<a href="#wifi">WiFi</a>
-						</li>		
+						<li class="nav-item">
+							<a class="nav-link text-secondary" data-toggle="pill" href="#pills-settings" role="tab" aria-controls="pills-settings" aria-selected="false" id="pills-settings-tab" data-id="settings">Settings</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-secondary" data-toggle="pill" href="#pills-time" role="tab" aria-controls="pills-time" aria-selected="false" id="pills-time-tab" data-id="time">Time</a>
+						</li>						
+						<li class="nav-item">
+							<a class="nav-link text-secondary" data-toggle="pill" href="#pills-wifi" role="tab" aria-controls="pills-wifi" aria-selected="false" id="pills-wifi-tab" data-id="wifi">WiFi</a>
+						</li>
 					</ul>
-				</div>
-			</div>
-			<div data-role="content">
-				<form action="/set_leds" method="POST" id="leds_form">			    
-					<div data-role="fieldcontain">
-						<label for="text_head1" id="text_head1">Tile patterns</label>
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-							<label for="pattern_color">Colors</label>
-					</div>
-					<div class="dispInlineSelectmenu">
-					    <select type="selectmenu" name="pattern_color" id="pattern_color">
-				            <option value="0"selected disabled hidden></option>
-							<option value="1">Cloud</option>
-							<option value="2">Lava</option>
-							<option value="3">Ocean</option>
-							<option value="4">Forest</option>
-							<option value="5">Rainbow</option>
-							<option value="6">Rainbow Stripes</option>
-							<option value="7">Party</option>
-							<option value="8">Heat</option>
-							<option value="9">Fire</option>
-							<option value="10">Random</option>
-							<option value="11">Purple and Green</option>
-							<option value="12">Red, White and Blue</option>							
-						</select>
-					</div>			
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-						<label for="patterns">Patterns</label>
-					</div>
-					<div class="dispInlineSelectmenu">
-					    <select type="selectmenu" name="patterns" id="patterns">
-				            <option value="0"selected disabled hidden></option>
-							<option value="1">Fixed</option>
-							<option value="2">Standard</option>
-							<option value="3">BPM</option>
-							<option value="4">KITT</option>
-							<option value="5">Plasma</option>
-							<option value="6">Fire Stripes</option>						
-						</select>
-					</div>	
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-							<label for="fixed_patterns">Fixed Patterns</label>
-					</div>
-					<div class="dispInlineSelectmenu">
-					    <select type="selectmenu" name="fixed_patterns" id="fixed_patterns">
-				            <option value="0"selected disabled hidden></option>
-							<option value="100">Confetti</option>
-							<option value="101">Sinelon</option>
-							<option value="102">Juggle</option>
-							<option value="103">Blendwave</option>
-							<option value="104">Rainbow Beat</option>
-							<option value="105">Full Rainbow</option>
-							<option value="106">Rainbow With Glitter</option>						
-						</select>
-					</div>						
- 		    	    <div class="line"></div>     		    	    
-					<div data-role="fieldcontain">
-						<label for="text_head1" id="text_head1">Properties</label>
-					</div>	                					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-						<label for="aut_display_enabled">Automatic Display On</label>
-					</div>
-					<div class="dispInline" >
-						<input onchange="elementChange(this)" type="checkbox" 
-						    data-role="flipswitch" name="aut_display_enabled" id="aut_display_enabled" 
-						    data-on-text="On" 
-						    data-off-text="Off" 
-						    data-wrapper-class="custom-label-flipswitch"
-						>
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="aut_display_on">Display On time</label>
-					</div>
-					<div class="dispInline" >
-						<div id="aut_display_on">
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-leds" role="tabpanel" aria-labelledby="pills-leds-tab">
+							<h4 id="tile-patterns" class="mt-3"><span class="bd-content-title">Tile patterns</span></h4>
+							<form action="/set_leds" method="POST" id="leds_form">
+								<div class="form-group row">
+									<label for="pattern_color" class="col-sm-2 col-form-label">Colors</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control led-pattern" name="pattern_color" id="pattern_color" data-type="patterncolor">
+											<option value="0" selected disabled hidden></option>
+											<option value="1">Cloud</option>
+											<option value="2">Lava</option>
+											<option value="3">Ocean</option>
+											<option value="4">Forest</option>
+											<option value="5">Rainbow</option>
+											<option value="6">Rainbow Stripes</option>
+											<option value="7">Party</option>
+											<option value="8">Heat</option>
+											<option value="9">Fire</option>
+											<option value="10">Random</option>
+											<option value="11">Purple and Green</option>
+											<option value="12">Red, White and Blue</option>							
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="patterns" class="col-sm-2 col-form-label">Patterns</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control led-pattern" name="patterns" id="patterns" data-type="pattern" data-loaded="false">
+								            <option value="0" data-tile="false" selected disabled hidden></option>
+											<option value="1" data-tile="false">Fixed</option>
+											<option value="2" data-tile="false">Standard</option>	
+											<option value="7" data-tile="true">Standard Tiles</option>
+											<option value="3" data-tile="false">BPM</option>
+											<option value="15" data-tile="true">BPM Tiles</option>
+											<option value="4" data-tile="false">KITT</option>
+											<option value="16" data-tile="true">KITT Tiles</option>
+											<option value="5" data-tile="false">Plasma</option>
+											<option value="17" data-tile="true">Plasma Tiles</option>
+											<option value="6" data-tile="false">Fire Stripes</option>
+											<option value="8" data-tile="false">Beatwave</option>
+											<option value="18" data-tile="true">Beatwave Tiles</option>	
+											<option value="9" data-tile="false">Inoise</option>
+											<option value="19" data-tile="true">Inoise Tiles</option>
+											<option value="10" data-tile="false">Mover</option>
+											<option value="20" data-tile="true">Mover Tiles</option>
+											<option value="11" data-tile="false">Noise1</option>
+											<option value="21" data-tile="true">Noise1 Tiles</option>
+											<option value="12" data-tile="false">Noise2</option>
+											<option value="22" data-tile="true">Noise2 Tiles</option>
+											<option value="13" data-tile="false">Noise3</option>
+											<option value="23" data-tile="true">Noise3 Tiles</option>
+											<option value="14" data-tile="false">Three sin</option>	
+											<option value="24" data-tile="true">Three sin Tiles</option>				
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="fixed_patterns" class="col-sm-2 col-form-label">Fixed Patterns</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control led-pattern" name="fixed_patterns" id="fixed_patterns" data-type="fixedpattern" data-loaded="false">
+								            <option value="0" data-tile="false" selected disabled hidden></option>
+											<option value="100" data-tile="false">Confetti</option>
+											<option value="109" data-tile="true">Confetti Tiles</option>
+											<option value="101" data-tile="false">Sinelon</option>
+											<option value="110" data-tile="true">Sinelon Tiles</option>
+											<option value="102" data-tile="false">Juggle</option>
+											<option value="111" data-tile="true">Juggle Tiles</option>
+											<option value="103" data-tile="false">Blendwave</option>
+											<option value="104" data-tile="false">Rainbow Beat</option>
+											<option value="105" data-tile="false">Full Rainbow</option>
+											<option value="106" data-tile="false">Rainbow With Glitter</option>
+											<option value="107" data-tile="false">Blur</option>
+											<option value="108" data-tile="false">Fill gradient</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="effects" class="col-sm-2 col-form-label">Individual effects</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control led-pattern" name="effects" id="effects" data-type="effects">
+								            <option value="0"></option>
+											<option value="1000">Glitter</option>
+											<option value="1001">Dot beat</option>
+											<!-- Didnt work right now
+											<option value="1002">Lightnings</option>
+											<option value="1003">Meteor shower</option>-->
+										</select>
+									</div>
+								</div>
+								<!--<div class="form-group row">
+									<label for="displayMode" class="col-sm-2 col-form-label">Display mode</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control" name="displayMode" id="displayMode">
+								            <option value="" data-tile="false" selected disabled hidden></option>
+								            <option value="false">Led patterns</option>
+											<option value="true">Tile patterns</option>
+										</select>
+									</div>
+								</div>-->
+								<div class="form-group row">
+									<label for="display_mode" class="col-sm-2 col-form-label">Tile mode</label>
+									<div class="col-sm-10">
+										<input type="checkbox" id="display_mode" name="display_mode" class="chkToggle" data-toggle="toggle" onchange="elementChange(this)" data-onstyle="secondary">
+									</div>
+								</div>
+							</form>
+							<h4 id="properties" class="mt-3"><span class="bd-content-title">Properties</span></h4>
+							<div class="form-group row">
+								<label for="aut_display_enabled" class="col-sm-2 col-form-label">Automatic display (Hour/Hour)</label>
+								<div class="col-sm-1">
+									<input type="checkbox" id="aut_display_enabled" name="aut_display_enabled" class="chkToggle" data-toggle="toggle" onchange="elementChange(this)" data-onstyle="secondary">
+								</div>
+								<div class="col-sm-9">
+									<input type="text" class="form-control-range" id="aut_display_on" name="aut_display_on" data-slider-min="0" data-slider-max="23" data-slider-step="1" data-slider-value="[6,18]">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="backlight" class="col-sm-2 col-form-label">Manual display</label>
+								<div class="col-sm-10">
+									<input type="checkbox" id="backlight" name="backlight" class="chkToggle" data-toggle="toggle" onchange="elementChange(this)" data-onstyle="secondary">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="pir_sensor_endabled" class="col-sm-2 col-form-label">Motion sensor (Min)</label>
+								<div class="col-sm-1">
+									<input type="checkbox" id="pir_sensor_endabled" name="pir_sensor_endabled" class="chkToggle" data-toggle="toggle" onchange="elementChange(this)" data-onstyle="secondary">
+								</div>
+								<div class="col-sm-9">
+									<select type="selectmenu" class="form-control pir-sensor-display-on-time" name="pir_sensor_display_on_time" id="pir_sensor_display_on_time" data-type="pir_sensor_display_on_time">
+										<option value="0" selected disabled hidden></option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+								</div>
+							</div>																			
+							<div class="form-group row">
+								<label for="led_strip_brightness" class="col-sm-2 col-form-label">Brightness</label>
+								<div class="col-sm-10">
+									<input type="number" id="txt_led_strip_brightness" name="txt_led_strip_brightness" class="form-control" value="120" min="1" max="255" step="1"/>
+									<input type="text" class="form-control-range" id="led_strip_brightness" name="led_strip_brightness" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="120">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="led_strip_speed" class="col-sm-2 col-form-label">Speed</label>
+								<div class="col-sm-10">
+									<input type="number" id="txt_led_strip_speed" name="txt_led_strip_speed" class="form-control" value="120" min="0" max="250" step="10"/>
+									<input type="text" class="form-control-range" id="led_strip_speed" name="led_strip_speed" data-slider-min="0" data-slider-max="250" data-slider-step="10" data-slider-value="120" max="250">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="colorpickerfield_led_strip" class="col-sm-2 col-form-label">Color</label>
+								<div class="col-sm-10">
+									<input type="text" id="colorpickerfield_led_strip" name="colorpickerfield_led_strip" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<button type="button" class="btn btn-secondary btn-lg btn-block" id="btnSetLedsSettingsProp" value="Set" >Save as default</button>
+							</div>
 						</div>
-					</div>					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-							<label for="backlight">Manual Display On</label>
+						<div class="tab-pane fade" id="pills-settings" role="tabpanel" aria-labelledby="pills-settings-tab">
+							<form action="/set_moodlite" method="POST" id="settings_form">
+								<h4 id="tile-patterns" class="mt-3"><span class="bd-content-title">LED</span></h4>
+								<div class="form-group row">
+									<label for="led_strip_nr_of_leds_corner" class="col-sm-2 col-form-label">Nr. of LEDs/Corner</label>
+									<div class="col-sm-10">
+										<input type="text" id="led_strip_nr_of_leds_corner" name="led_strip_nr_of_leds_corner" class="form-control" value="" minlength="1" maxlength="1"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="led_strip_nr_of_leds" class="col-sm-2 col-form-label">Total Nr. of LEDs</label>
+									<div class="col-sm-10">
+										<input type="text" id="led_strip_nr_of_leds" name="led_strip_nr_of_leds" class="form-control" value="" minlength="1" maxlength="3"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="led_strip_nr_sides_tile" class="col-sm-2 col-form-label">Nr. of sides per Tile</label>
+									<div class="col-sm-10">
+										<input type="text" id="led_strip_nr_sides_tile" name="led_strip_nr_sides_tile" class="form-control" value="" minlength="1" maxlength="40" placeholder="3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3" required="required" pattern="^[0-9]{1}$"/>
+										<small id="led_strip_nr_sides_tileHelp" class="form-text text-muted">Detail the number of sides per tiles on your setup. Max 20 tiles. Example: 3,3,3,3,4,4,6,6,6</small>																																		   
+									</div>
+								</div>
+								<div class="form-group row">
+									<button type="button" class="btn btn-secondary btn-lg btn-block" id="btnSetLedsSettings" value="Set" >Save and restart</button>
+								</div>
+								<h4 id="tile-patterns" class="mt-3"><span class="bd-content-title">MQTT</span></h4>
+								<div class="form-group row">
+									<label for="mqtt_host_name" class="col-sm-2 col-form-label">MQTT Host</label>
+									<div class="col-sm-10">
+										<input type="text" id="mqtt_host_name" name="mqtt_host_name" class="form-control" value="" minlength="1" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="mqtt_port" class="col-sm-2 col-form-label">MQTT Port</label>
+									<div class="col-sm-10">
+										<input type="text" id="mqtt_port" name="mqtt_port" class="form-control" value="" minlength="1" maxlength="10"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="mqtt_user_name" class="col-sm-2 col-form-label">MQTT User name</label>
+									<div class="col-sm-10">
+										<input type="text" id="mqtt_user_name" name="mqtt_user_name" class="form-control" value="" minlength="1" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="mqtt_user_password" class="col-sm-2 col-form-label">MQTT User password</label>
+									<div class="col-sm-10">
+										<input type="password" id="mqtt_user_password" name="mqtt_user_password" class="form-control" value="" minlength="1" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="mqtt_client_id" class="col-sm-2 col-form-label">MQTT Client ID</label>
+									<div class="col-sm-10">
+										<input type="text" id="mqtt_client_id" name="mqtt_client_id" class="form-control" value="" minlength="1" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<button type="button" class="btn btn-secondary btn-lg btn-block" id="btnSetMqtt" value="Set" >Save and restart</button>
+								</div>
+							</form>
+						</div>						
+						<div class="tab-pane fade" id="pills-time" role="tabpanel" aria-labelledby="pills-time-tab">
+							<form action="/set_time" method="POST" id="time_form">
+								<h4 id="tz-dst" class="mt-3"><span class="bd-content-title">Daylight</span></h4>												
+								<div class="form-group row">
+									<label for="ntp_daylight_rule_tz" class="col-sm-2 col-form-label">Timezone</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-tz" name="tz_dst_rule_tz" id="tz_dst_rule_tz" data-type="tz_dst_rule_tz">
+											<option value=" " selected disabled hidden></option>
+											<option value="A">Alpha Time Zone</option>
+											<option value="ACDT">Australian Central Daylight Time</option>
+											<option value="ADT">Arabia Daylight Time</option>
+											<option value="ADT">Atlantic Daylight Time</option>
+											<option value="AEDT">Australian Eastern Daylight Time</option>
+											<option value="AKDT">Alaska Daylight Time</option>
+											<option value="AMST">Amazon Summer Time</option>
+											<option value="AMST">Armenia Summer Time</option>
+											<option value="ANAST">Anadyr Summer Time</option>
+											<option value="AWDT">Australian Western Daylight Time</option>
+											<option value="AZOST">Azores Summer Time</option>
+											<option value="AZST">Azerbaijan Summer Time</option>
+											<option value="AoE">Anywhere on Earth</option>
+											<option value="B">Bravo Time Zone</option>
+											<option value="BRST">Brasilia Summer Time</option>
+											<option value="BST">British Summer Time</option>
+											<option value="CDT">Central Daylight Time</option>
+											<option value="CDT">Cuba Daylight Time</option>
+											<option value="CEST">Central European Summer Time</option>
+											<option value="CHADT">Chatham Island Daylight Time</option>
+											<option value="CHOST">Choibalsan Summer Time</option>
+											<option value="CIDST">Cayman Islands Daylight Saving Time</option>
+											<option value="CLST">Chile Summer Time</option>
+											<option value="EASST">Easter Island Summer Time</option>
+											<option value="EDT">Eastern Daylight Time</option>
+											<option value="EEST">Eastern European Summer Time</option>
+											<option value="EGST">Eastern Greenland Summer Time</option>
+											<option value="F">Foxtrot Time Zone</option>
+											<option value="FJST">Fiji Summer Time</option>
+											<option value="FKST">Falkland Islands Summer Time</option>
+											<option value="G">Golf Time Zone</option>
+											<option value="GMT">Greenwich Mean Time</option>
+											<option value="H">Hotel Time Zone</option>
+											<option value="HDT">Hawaii-Aleutian Daylight Time</option>
+											<option value="HOVST">Hovd Summer Time</option>
+											<option value="IDT">Israel Daylight Time</option>
+											<option value="IRDT">Iran Daylight Time</option>
+											<option value="IRKST">Irkutsk Summer Time</option>
+											<option value="K">Kilo Time Zone</option>
+											<option value="KRAST">Krasnoyarsk Summer Time</option>
+											<option value="L">Lima Time Zone</option>
+											<option value="LHDT">Lord Howe Daylight Time</option>
+											<option value="M">Mike Time Zone</option>
+											<option value="MAGST">Magadan Summer Time</option>
+											<option value="MDT">Mountain Daylight Time</option>
+											<option value="MSD">Moscow Daylight Time</option>
+											<option value="N">November Time Zone</option>
+											<option value="NDT">Newfoundland Daylight Time</option>
+											<option value="NOVST">Novosibirsk Summer Time</option>
+											<option value="NZDT">New Zealand Daylight Time</option>
+											<option value="O">Oscar Time Zone</option>
+											<option value="OMSST">Omsk Summer Time</option>
+											<option value="P">Papa Time Zone</option>
+											<option value="PDT">Pacific Daylight Time</option>
+											<option value="PETST">Kamchatka Summer Time</option>
+											<option value="PMDT">Pierre & Miquelon Daylight Time</option>
+											<option value="PYST">Paraguay Summer Time</option>
+											<option value="TOST">Tonga Summer Time</option>
+											<option value="U">Uniform Time Zone</option>
+											<option value="ULAST">Ulaanbaatar Summer Time</option>
+											<option value="UTC">Coordinated Universal Time</option>
+											<option value="UYST">Uruguay Summer Time</option>
+											<option value="VLAST">Vladivostok Summer Time</option>
+											<option value="W">Whiskey Time Zone</option>
+											<option value="WARST">Western Argentine Summer Time</option>
+											<option value="WAST">West Africa Summer Time</option>
+											<option value="WEST">Western European Summer Time</option>
+											<option value="WGST">Western Greenland Summer Time</option>
+											<option value="WST">Western Sahara Summer Time</option>
+											<option value="X">X-ray Time Zone</option>
+											<option value="Y">Yankee Time Zone</option>
+											<option value="YAKST">Yakutsk Summer Time</option>
+											<option value="YEKST">Yekaterinburg Summer Time</option>
+											<option value="Z">Zulu Time Zone</option>
+										</select>
+									</div>
+								</div>								
+								<div class="form-group row">
+									<label for="tz_dst_rule_week" class="col-sm-2 col-form-label">Week</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-week" name="tz_dst_rule_week" id="tz_dst_rule_week" data-type="tz_dst_rule_week">
+											<option value=" " selected disabled hidden></option>
+											<option value="0">Last</option>	
+											<option value="1">First</option>
+											<option value="2">Second</option>
+											<option value="3">Third</option>
+											<option value="4">Fourth</option>
+
+										</select>											
+									</div>
+								</div>								
+								<div class="form-group row">
+									<label for="tz_dst_rule_dow" class="col-sm-2 col-form-label">Day of week</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-dow" name="tz_dst_rule_dow" id="tz_dst_rule_dow" data-type="tz_dst_rule_dow">
+											<option value=" " selected disabled hidden></option>
+											<option value="1">Sunday</option>	
+											<option value="2">Monday</option>
+											<option value="3">Tuesday</option>
+											<option value="4">Wednesday</option>
+											<option value="5">Thursday</option>
+											<option value="6">Friday</option>
+											<option value="7">Saturday</option>										
+										</select>											
+									</div>
+								</div>							
+								<div class="form-group row">
+									<label for="tz_dst_rule_month" class="col-sm-2 col-form-label">Month</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-month" name="tz_dst_rule_month" id="tz_dst_rule_month" data-type="tz_dst_rule_month">
+											<option value=" " selected disabled hidden></option>
+											<option value="1">January</option>
+											<option value="2">February</option>
+											<option value="3">March</option>
+											<option value="4">April</option>
+											<option value="5">May</option>
+											<option value="6">June</option>
+											<option value="7">July</option>
+											<option value="8">August</option>
+											<option value="9">September</option>
+											<option value="10">October</option>
+											<option value="11">November</option>
+											<option value="12">December</option>
+										</select>											
+									</div>
+								</div>													
+								<div class="form-group row">
+									<label for="tz_dst_rule_hour" class="col-sm-2 col-form-label">Hour</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-hour" name="tz_dst_rule_hour" id="tz_dst_rule_hour" data-type="tz_dst_rule_hour">
+											<option value=" " selected disabled hidden></option>
+											<option value="0">0</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>	
+											<option value="22">22</option>
+											<option value="23">23</option>											
+										</select>											
+									</div>
+								</div>																
+								<div class="form-group row">
+									<label for="tz_dst_rule_offset" class="col-sm-2 col-form-label">Offset</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-dst-rule-offset" name="tz_dst_rule_offset" id="tz_dst_rule_offset" data-type="tz_dst_rule_offset">
+											<option value=" " selected disabled hidden></option>
+											<option value="-840">-14h</option>
+											<option value="-825">-13:45h</option>
+											<option value="-780">-13h</option>
+											<option value="-765">-12:45h</option>
+											<option value="-720">-12h</option>
+											<option value="-660">-11h</option>
+											<option value="-630">-10:30h</option>
+											<option value="-600">-10h</option>
+											<option value="-570">-9:30h</option>
+											<option value="-540">-9h</option>
+											<option value="-525">-8:45h</option>
+											<option value="-510">-8:30h</option>
+											<option value="-480">-8h</option>
+											<option value="-420">-7h</option>
+											<option value="-390">-6:30h</option>
+											<option value="-360">-6h</option>
+											<option value="-345">-5:45h</option>
+											<option value="-330">-5:30h</option>
+											<option value="-300">-5h</option>
+											<option value="-270">-4:30h</option>
+											<option value="-240">-4h</option>
+											<option value="-210">-3:30h</option>
+											<option value="-180">-3h</option>
+											<option value="-150">-2:30h</option>
+											<option value="-120">-2h</option>
+											<option value="-60">-1h</option>
+											<option value="0">0h</option>
+											<option value="60">1h</option>
+											<option value="120">2h</option>
+											<option value="150">2:30h</option>
+											<option value="180">3h</option>
+											<option value="210">3:30h</option>
+											<option value="240">4h</option>
+											<option value="270">4:30h</option>
+											<option value="300">5h</option>
+											<option value="330">5:30h</option>
+											<option value="345">5:45h</option>
+											<option value="360">6h</option>
+											<option value="390">6:30h</option>
+											<option value="420">7h</option>
+											<option value="480">8h</option>
+											<option value="510">8:30h</option>
+											<option value="525">8:45h</option>
+											<option value="540">9h</option>
+											<option value="570">9:30h</option>
+											<option value="600">10h</option>
+											<option value="630">10:30h</option>
+											<option value="660">11h</option>
+											<option value="720">12h</option>
+											<option value="765">12:45h</option>
+											<option value="780">13h</option>
+											<option value="825">13:45h</option>
+											<option value="840">14h</option>										
+										</select>											
+									</div>
+								</div>																																
+								<h4 id="tz-std" class="mt-3"><span class="bd-content-title">Standard</span></h4>	
+								<div class="form-group row">
+									<label for="ntp_standard_rule_tz" class="col-sm-2 col-form-label">Timezone</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-tz" name="ntp_standard_rule_tz" id="tz_std_rule_tz" data-type="tz_std_rule_tz">
+											<option value=" " selected disabled hidden></option>
+											<option value="A">Alpha Time Zone</option>
+											<option value="ACDT">Australian Central standard Time</option>
+											<option value="ACST">Australian Central Standard Time</option>
+											<option value="ACT">Acre Time</option>
+											<option value="ACT">Australian Central Time</option>
+											<option value="ACWST">Australian Central Western Standard Time</option>
+											<option value="ADT">Arabia standard Time</option>
+											<option value="ADT">Atlantic standard Time</option>
+											<option value="AEDT">Australian Eastern standard Time</option>
+											<option value="AEST">Australian Eastern Standard Time</option>
+											<option value="AET">Australian Eastern Time</option>
+											<option value="AFT">Afghanistan Time</option>
+											<option value="AKDT">Alaska standard Time</option>
+											<option value="AKST">Alaska Standard Time</option>
+											<option value="ALMT">Alma-Ata Time</option>
+											<option value="AMT">Amazon Time</option>
+											<option value="AMT">Armenia Time</option>
+											<option value="ANAT">Anadyr Time</option>
+											<option value="AQTT">Aqtobe Time</option>
+											<option value="ART">Argentina Time</option>
+											<option value="AST">Arabia Standard Time</option>
+											<option value="AST">Atlantic Standard Time</option>
+											<option value="AT">Atlantic Time</option>
+											<option value="AWDT">Australian Western standard Time</option>
+											<option value="AWST">Australian Western Standard Time</option>
+											<option value="AZOT">Azores Time</option>
+											<option value="AZT">Azerbaijan Time</option>
+											<option value="AoE">Anywhere on Earth</option>
+											<option value="B">Bravo Time Zone</option>
+											<option value="BNT">Brunei Darussalam Time</option>
+											<option value="BOT">Bolivia Time</option>
+											<option value="BRT">Brasilia Time</option>
+											<option value="BST">Bangladesh Standard Time</option>
+											<option value="BST">Bougainville Standard Time</option>
+											<option value="BTT">Bhutan Time</option>
+											<option value="C">Charlie Time Zone</option>
+											<option value="CAST">Casey Time</option>
+											<option value="CAT">Central Africa Time</option>
+											<option value="CCT">Cocos Islands Time</option>
+											<option value="CDT">Central standard Time</option>
+											<option value="CDT">Cuba standard Time</option>
+											<option value="CET">Central European Time</option>
+											<option value="CHADT">Chatham Island standard Time</option>
+											<option value="CHAST">Chatham Island Standard Time</option>
+											<option value="CHOT">Choibalsan Time</option>
+											<option value="CHUT">Chuuk Time</option>
+											<option value="CIDST">Cayman Islands standard Saving Time</option>
+											<option value="CIST">Cayman Islands Standard Time</option>
+											<option value="CKT">Cook Island Time</option>
+											<option value="CLT">Chile Standard Time</option>
+											<option value="COT">Colombia Time</option>
+											<option value="CST">Central Standard Time</option>
+											<option value="CST">China Standard Time</option>
+											<option value="CST">Cuba Standard Time</option>
+											<option value="CT">Central Time</option>
+											<option value="CVT">Cape Verde Time</option>
+											<option value="CXT">Christmas Island Time</option>
+											<option value="ChST">Chamorro Standard Time</option>
+											<option value="D">Delta Time Zone</option>
+											<option value="DAVT">Davis Time</option>
+											<option value="DDUT">Dumont-d'Urville Time</option>
+											<option value="E">Echo Time Zone</option>
+											<option value="EAST">Easter Island Standard Time</option>
+											<option value="EAT">Eastern Africa Time</option>
+											<option value="ECT">Ecuador Time</option>
+											<option value="EDT">Eastern standard Time</option>
+											<option value="EET">Eastern European Time</option>
+											<option value="EGT">East Greenland Time</option>
+											<option value="EST">Eastern Standard Time</option>
+											<option value="ET">Eastern Time</option>
+											<option value="F">Foxtrot Time Zone</option>
+											<option value="FET">Further-Eastern European Time</option>
+											<option value="FJT">Fiji Time</option>
+											<option value="FKT">Falkland Island Time</option>
+											<option value="FNT">Fernando de Noronha Time</option>
+											<option value="G">Golf Time Zone</option>
+											<option value="GALT">Galapagos Time</option>
+											<option value="GAMT">Gambier Time</option>
+											<option value="GET">Georgia Standard Time</option>
+											<option value="GFT">French Guiana Time</option>
+											<option value="GILT">Gilbert Island Time</option>
+											<option value="GMT">Greenwich Mean Time</option>
+											<option value="GST">Gulf Standard Time</option>
+											<option value="GST">South Georgia Time</option>
+											<option value="GYT">Guyana Time</option>
+											<option value="H">Hotel Time Zone</option>
+											<option value="HDT">Hawaii-Aleutian standard Time</option>
+											<option value="HKT">Hong Kong Time</option>
+											<option value="HOVT">Hovd Time</option>
+											<option value="HST">Hawaii Standard Time</option>
+											<option value="I">India Time Zone</option>
+											<option value="ICT">Indochina Time</option>
+											<option value="IDT">Israel standard Time</option>
+											<option value="IOT">Indian Chagos Time</option>
+											<option value="IRDT">Iran standard Time</option>
+											<option value="IRKT">Irkutsk Time</option>
+											<option value="IRST">Iran Standard Time</option>
+											<option value="IST">India Standard Time</option>
+											<option value="IST">Irish Standard Time</option>
+											<option value="IST">Israel Standard Time</option>
+											<option value="JST">Japan Standard Time</option>
+											<option value="K">Kilo Time Zone</option>
+											<option value="KGT">Kyrgyzstan Time</option>
+											<option value="KOST">Kosrae Time</option>
+											<option value="KRAT">Krasnoyarsk Time</option>
+											<option value="KST">Korea Standard Time</option>
+											<option value="KUYT">Kuybyshev Time</option>
+											<option value="L">Lima Time Zone</option>
+											<option value="LHDT">Lord Howe standard Time</option>
+											<option value="LHST">Lord Howe Standard Time</option>
+											<option value="LINT">Line Islands Time</option>
+											<option value="M">Mike Time Zone</option>
+											<option value="MAGT">Magadan Time</option>
+											<option value="MART">Marquesas Time</option>
+											<option value="MAWT">Mawson Time</option>
+											<option value="MDT">Mountain standard Time</option>
+											<option value="MHT">Marshall Islands Time</option>
+											<option value="MMT">Myanmar Time</option>
+											<option value="MSD">Moscow standard Time</option>
+											<option value="MSK">Moscow Standard Time</option>
+											<option value="MST">Mountain Standard Time</option>
+											<option value="MT">Mountain Time</option>
+											<option value="MUT">Mauritius Time</option>
+											<option value="MVT">Maldives Time</option>
+											<option value="MYT">Malaysia Time</option>
+											<option value="N">November Time Zone</option>
+											<option value="NCT">New Caledonia Time</option>
+											<option value="NDT">Newfoundland standard Time</option>
+											<option value="NFT">Norfolk Time</option>
+											<option value="NOVT">Novosibirsk Time</option>
+											<option value="NPT">Nepal Time</option>
+											<option value="NRT">Nauru Time</option>
+											<option value="NST">Newfoundland Standard Time</option>
+											<option value="NUT">Niue Time</option>
+											<option value="NZDT">New Zealand standard Time</option>
+											<option value="NZST">New Zealand Standard Time</option>
+											<option value="O">Oscar Time Zone</option>
+											<option value="OMST">Omsk Standard Time</option>
+											<option value="ORAT">Oral Time</option>
+											<option value="P">Papa Time Zone</option>
+											<option value="PDT">Pacific standard Time</option>
+											<option value="PET">Peru Time</option>
+											<option value="PETT">Kamchatka Time</option>
+											<option value="PGT">Papua New Guinea Time</option>
+											<option value="PHOT">Phoenix Island Time</option>
+											<option value="PHT">Philippine Time</option>
+											<option value="PKT">Pakistan Standard Time</option>
+											<option value="PMST">Pierre & Miquelon Standard Time</option>
+											<option value="PONT">Pohnpei Standard Time</option>
+											<option value="PST">Pacific Standard Time</option>
+											<option value="PST">Pitcairn Standard Time</option>
+											<option value="PT">Pacific Time</option>
+											<option value="PWT">Palau Time</option>
+											<option value="PYT">Paraguay Time</option>
+											<option value="PYT">Pyongyang Time</option>
+											<option value="Q">Quebec Time Zone</option>
+											<option value="QYZT">Qyzylorda Time</option>
+											<option value="R">Romeo Time Zone</option>
+											<option value="RET">Reunion Time</option>
+											<option value="ROTT">Rothera Time</option>
+											<option value="S">Sierra Time Zone</option>
+											<option value="SAKT">Sakhalin Time</option>
+											<option value="SAMT">Samara Time</option>
+											<option value="SAST">South Africa Standard Time</option>
+											<option value="SBT">Solomon Islands Time</option>
+											<option value="SCT">Seychelles Time</option>
+											<option value="SGT">Singapore Time</option>
+											<option value="SRET">Srednekolymsk Time</option>
+											<option value="SRT">Suriname Time</option>
+											<option value="SST">Samoa Standard Time</option>
+											<option value="SYOT">Syowa Time</option>
+											<option value="T">Tango Time Zone</option>
+											<option value="TAHT">Tahiti Time</option>
+											<option value="TFT">French Southern and Antarctic Time</option>
+											<option value="TJT">Tajikistan Time</option>
+											<option value="TKT">Tokelau Time</option>
+											<option value="TLT">East Timor Time</option>
+											<option value="TMT">Turkmenistan Time</option>
+											<option value="TOT">Tonga Time</option>
+											<option value="TRT">Turkey Time</option>
+											<option value="TVT">Tuvalu Time</option>
+											<option value="U">Uniform Time Zone</option>
+											<option value="ULAT">Ulaanbaatar Time</option>
+											<option value="UTC">Coordinated Universal Time</option>
+											<option value="UYT">Uruguay Time</option>
+											<option value="UZT">Uzbekistan Time</option>
+											<option value="V">Victor Time Zone</option>
+											<option value="VET">Venezuelan Standard Time</option>
+											<option value="VLAT">Vladivostok Time</option>
+											<option value="VOST">Vostok Time</option>
+											<option value="VUT">Vanuatu Time</option>
+											<option value="W">Whiskey Time Zone</option>
+											<option value="WAKT">Wake Time</option>
+											<option value="WAT">West Africa Time</option>
+											<option value="WET">Western European Time</option>
+											<option value="WFT">Wallis and Futuna Time</option>
+											<option value="WGT">West Greenland Time</option>
+											<option value="WIB">Western Indonesian Time</option>
+											<option value="WIT">Eastern Indonesian Time</option>
+											<option value="WITA">Central Indonesian Time</option>
+											<option value="WST">West Samoa Time</option>
+											<option value="WT">Western Sahara Standard Time</option>
+											<option value="X">X-ray Time Zone</option>
+											<option value="Y">Yankee Time Zone</option>
+											<option value="YAKT">Yakutsk Time</option>
+											<option value="YAPT">Yap Time</option>
+											<option value="YEKT">Yekaterinburg Time</option>
+											<option value="Z">Zulu Time Zone</option>
+										</select>
+									</div>
+								</div>								
+								<div class="form-group row">
+									<label for="tz_std_rule_week" class="col-sm-2 col-form-label">Week</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-week" name="tz_std_rule_week" id="tz_std_rule_week" data-type="tz_std_rule_week">
+											<option value=" " selected disabled hidden></option>
+											<option value="0">Last</option>	
+											<option value="1">First</option>
+											<option value="2">Second</option>
+											<option value="3">Third</option>
+											<option value="4">Fourth</option>
+										</select>											
+									</div>
+								</div>								
+								<div class="form-group row">
+									<label for="tz_std_rule_dow" class="col-sm-2 col-form-label">Day of week</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-dow" name="tz_std_rule_dow" id="tz_std_rule_dow" data-type="tz_std_rule_dow">
+											<option value=" " selected disabled hidden></option>
+											<option value="1">Sunday</option>	
+											<option value="2">Monday</option>
+											<option value="3">Tuesday</option>
+											<option value="4">Wednesday</option>
+											<option value="5">Thursday</option>
+											<option value="6">Friday</option>
+											<option value="7">Saturday</option>											
+										</select>											
+									</div>
+								</div>							
+								<div class="form-group row">
+									<label for="tz_std_rule_month" class="col-sm-2 col-form-label">Month</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-month" name="tz_std_rule_month" id="tz_std_rule_month" data-type="tz_std_rule_month">
+											<option value=" " selected disabled hidden></option>
+											<option value="1">January</option>
+											<option value="2">February</option>
+											<option value="3">March</option>
+											<option value="4">April</option>
+											<option value="5">May</option>
+											<option value="6">June</option>
+											<option value="7">July</option>
+											<option value="8">August</option>
+											<option value="9">September</option>
+											<option value="10">October</option>
+											<option value="11">November</option>
+											<option value="12">December</option>
+										</select>											
+									</div>
+								</div>													
+								<div class="form-group row">
+									<label for="tz_std_rule_hour" class="col-sm-2 col-form-label">Hour</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-hour" name="tz_std_rule_hour" id="tz_std_rule_hour" data-type="tz_std_rule_hour">
+											<option value=" " selected disabled hidden></option>
+											<option value="0">0</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>	
+											<option value="22">22</option>
+											<option value="23">23</option>											
+										</select>											
+									</div>
+								</div>																
+								<div class="form-group row">
+									<label for="tz_std_rule_offset" class="col-sm-2 col-form-label">Offset</label>
+									<div class="col-sm-10">
+										<select type="selectmenu" class="form-control tz-std-rule-offset" name="tz_std_rule_offset" id="tz_std_rule_offset" data-type="tz_std_rule_offset">
+											<option value=" " selected disabled hidden></option>
+											<option value="-840">-14h</option>
+											<option value="-825">-13:45h</option>
+											<option value="-780">-13h</option>
+											<option value="-765">-12:45h</option>
+											<option value="-720">-12h</option>
+											<option value="-660">-11h</option>
+											<option value="-630">-10:30h</option>
+											<option value="-600">-10h</option>
+											<option value="-570">-9:30h</option>
+											<option value="-540">-9h</option>
+											<option value="-525">-8:45h</option>
+											<option value="-510">-8:30h</option>
+											<option value="-480">-8h</option>
+											<option value="-420">-7h</option>
+											<option value="-390">-6:30h</option>
+											<option value="-360">-6h</option>
+											<option value="-345">-5:45h</option>
+											<option value="-330">-5:30h</option>
+											<option value="-300">-5h</option>
+											<option value="-270">-4:30h</option>
+											<option value="-240">-4h</option>
+											<option value="-210">-3:30h</option>
+											<option value="-180">-3h</option>
+											<option value="-150">-2:30h</option>
+											<option value="-120">-2h</option>
+											<option value="-60">-1h</option>
+											<option value="0">0h</option>
+											<option value="60">1h</option>
+											<option value="120">2h</option>
+											<option value="150">2:30h</option>
+											<option value="180">3h</option>
+											<option value="210">3:30h</option>
+											<option value="240">4h</option>
+											<option value="270">4:30h</option>
+											<option value="300">5h</option>
+											<option value="330">5:30h</option>
+											<option value="345">5:45h</option>
+											<option value="360">6h</option>
+											<option value="390">6:30h</option>
+											<option value="420">7h</option>
+											<option value="480">8h</option>
+											<option value="510">8:30h</option>
+											<option value="525">8:45h</option>
+											<option value="540">9h</option>
+											<option value="570">9:30h</option>
+											<option value="600">10h</option>
+											<option value="630">10:30h</option>
+											<option value="660">11h</option>
+											<option value="720">12h</option>
+											<option value="765">12:45h</option>
+											<option value="780">13h</option>
+											<option value="825">13:45h</option>
+											<option value="840">14h</option>										
+										</select>											
+									</div>
+								</div>							
+								<h4 id="ntp-server" class="mt-3"><span class="bd-content-title">NTP Server</span></h4>							
+								<div class="form-group row">
+									<label for="ntp_server" class="col-sm-2 col-form-label">Server address</label>
+									<div class="col-sm-10">
+										<input type="text" id="ntp_server" name="ntp_server" class="form-control" value=""/>
+									</div>
+								</div>
+								<div class="form-group row">															
+									<label for="ntp_date_time" class="col-sm-2 col-form-label">Time</label>
+									<div class="col-sm-10">
+										<input type="text" id="ntp_date_time" name="ntp_date_time" class="form-control" value="" readonly/>
+									</div>
+								</div>						
+								<div class="form-group row">
+									<button type="button" class="btn btn-secondary btn-lg btn-block" id="btnSetTime" value="Set" >Save and restart</button>
+								</div>								
+							</form>
+						</div>												
+						<div class="tab-pane fade" id="pills-wifi" role="tabpanel" aria-labelledby="pills-wifi-tab">
+							<form action="/set_wifi" method="POST" id="wifi_form">
+								<h4 id="tile-patterns" class="mt-3"><span class="bd-content-title">System</span></h4>
+								<div class="form-group row">
+									<label for="ssid" class="col-sm-2 col-form-label">SSID</label>
+									<div class="col-sm-10">
+										<input type="text" id="ssid" name="ssid" class="form-control" value="" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="password" class="col-sm-2 col-form-label">Password</label>
+									<div class="col-sm-10">
+										<input type="password" id="password" name="password" class="form-control" value="" maxlength="20"/>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="hostname" class="col-sm-2 col-form-label">Hostname</label>
+									<div class="col-sm-10">
+										<input type="text" id="hostname" name="hostname" class="form-control" value="" maxlength="20"/>
+									</div>
+								</div
+								<div class="form-group row">
+									<button type="submit" class="btn btn-secondary btn-lg btn-block" id="wifi_set" value="Set" >Save and restart</button>
+								</div>
+							</form>
+						</div>
 					</div>
-					<div class="dispInline">
-							<input onchange="elementChange(this)" type="checkbox"
-							data-role="flipswitch" name="backlight" id="backlight"
-							data-on-text="On" 
-							data-off-text="Off"
-							data-wrapper-class="custom-label-flipswitch">
-					</div>					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-						<label for="pir_sensor_endabled">Motion sensor</label>
-					</div>
-					<div class="dispInline" >
-						<input onchange="elementChange(this)" type="checkbox" 
-						    data-role="flipswitch" name="pir_sensor_endabled" id="pir_sensor_endabled" 
-						    data-on-text="On" 
-						    data-off-text="Off" 
-						    data-wrapper-class="custom-label-flipswitch"
-						>
-					</div>				
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel">
-						<label for="led_strip_brightness">Brightness</label>
-					</div>
-					<div class="dispInlineSlider">
-						<input type="range" name="led_strip_brightness" id="led_strip_brightness" min="0" max="255" value="10" step="1">
-					</div>	
-					<div class="clearFloats"></div>	
-					<div class="dispInlineLabel">
-						<label for="led_strip_speed">Speed</label>
-					</div>
-					<div class="dispInlineSlider">							
-						<input type="range" name="led_strip_speed" id="led_strip_speed" min="0" max="250" value="20" step="10">
-					</div>	
-                    <div class="clearFloats"></div>					
-					<div class="dispInlineLabel">
-						<label for="colorpickerfield_led_strip">LED Color</label>						
-					</div>
-					<div class="dispInlineSelectmenu">					
-                    	<input type="text" name="colorpickerfield_led_strip" id="colorpickerfield_led_strip" value="00ff00"  minlength="6" maxlength="6" size="6">	
-					</div>    
-				    <div>
-						 <button type="button" id="btnSetLedsSettingsProp" value="Set" class="save-restart">Save as default</button> 
-					</div>
-				</form> 					
-			</div>
-			<footer>
-                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
-            </footer>
-		</div>	
-		<div data-role="page" id="settings">
-			<div data-role="header">
-				<h1 id="toptitle_settings">Moodlite</h1>
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a href="#leds">LEDs</a>
-						</li>	
-						<li>
-							<a class="ui-btn-active ui-state-persist">Settings</a>
-						</li>
-						<li>
-							<a href="#wifi">WiFi</a>
-						</li>				
-					</ul>
-				</div>
-			</div>
-			<div data-role="content">
-				<form action="/set_moodlite" method="POST" id="settings_form">
-					<div data-role="fieldcontain">
-						<label for="text_head1" id="text_head1">System</label>
-					</div>					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="ntp_server">NTP server</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="ntp_server" id="ntp_server" minlength="1" maxlength="93" size="20">
-						<input type="text" name="ntp_date_time" id="ntp_date_time" minlength="1" maxlength="93" size="20" disabled>						
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="led_strip_nr_of_leds_corner">Nr. of LEDs/Corner</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="led_strip_nr_of_leds_corner" id="led_strip_nr_of_leds_corner" minlength="1" maxlength="1" size="20">
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="led_strip_nr_of_leds">Total Nr. of LEDs</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="led_strip_nr_of_leds" id="led_strip_nr_of_leds" minlength="1" maxlength="3" size="20">
-					</div>
-				    <div>
-						 <button type="button" id="btnSetLedsSettings" value="Set" class="save-restart">Save and restart </button> 
-					</div>					
-					<div class="line"></div>		
-					<div data-role="fieldcontain">
-						<label for="text_head1" id="text_head1">MQTT</label>
-					</div>
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="mqtt_host_name">MQTT Host</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="mqtt_host_name" id="mqtt_host_name" minlength="1" maxlength="20" size="20">
-					</div>  				
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="mqtt_port">MQTT Port</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="mqtt_port" id="mqtt_port" minlength="1" maxlength="10" size="20">
-					</div> 					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="mqtt_user_name">MQTT User name</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="mqtt_user_name" id="mqtt_user_name" minlength="1" maxlength="20" size="20">
-					</div> 					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="mqtt_user_password">MQTT User password</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="mqtt_user_password" id="mqtt_user_password" minlength="1" maxlength="20" size="20">
-					</div> 					
-					<div class="clearFloats"></div>
-					<div class="dispInlineLabel" >
-						<label for="mqtt_client_id">MQTT Client ID</label>		
-				    </div>   
-				    <div class="dispInline" >
-						<input type="text" name="mqtt_client_id" id="mqtt_client_id" minlength="1" maxlength="20" size="20">
-					</div> 
-					<div class="clearFloats"></div>					
-				    <div>
-						 <button type="button" id="btnSetMqtt" value="Set" class="save-restart">Save and restart </button> 
-					</div>					
-				</form>						
-			</div>  
-			<footer>
-                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
-            </footer>			
-		</div>	
-		<div data-role="page" id="wifi">
-			<div data-role="header">
-				<h1 id="toptitle_wifi">Moodlite</h1>
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a href="#leds">LEDs</a>
-						</li>					
-						<li>
-							<a href="#settings">Settings</a>
-						</li>
-						<li>
-							<a class="ui-btn-active ui-state-persist">WiFi</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div data-role="content">
-				<form action="/set_wifi" method="POST" id="wifi_form">
-					<div data-role="fieldcontain">
-						<label for="ssid">SSID</label>
-						<input type="text" name="ssid" id="ssid" maxlength="20">
-					</div>
-					<div data-role="fieldcontain">
-						<label for="password">Password</label>
-						<input type="password" name="password" id="password" maxlength="20">
-					</div>
-					<div data-role="fieldcontain">
-						<label for="hostname">Hostname</label>
-						<input type="text" name="hostname" id="hostname" maxlength="20">
-					</div>
-					<div data-role="fieldcontain">
-						<label for="wifi_set">&nbsp;</label>
-						<button type="submit" id="wifi_set" class="ui-btn ui-btn-inline">Set</button>
-					</div>
-				</form>
-			</div>
-			<div id="status" data-role="footer">Status</div>	
-			<footer>
-                <p class="copyright">Copyright © 2019 Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for Moodlite. </p>
-            </footer>			
-		</div>
-	</body>
+                </main>
+                <footer class="footer">
+   					<div class="container-fluid text-center">
+   						<span class="text-muted">
+  						    <p class="copyright">
+								Copyright © 2019 Shiryou (A.R.N.) and Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for moodlite.
+   						    </p>
+   						</span>
+   					</div>
+				</footer>
+            </div>
+        </div>
+		<!-- 
+        <script src="https://unpkg.com/feather-icons/dist/feather.min.js" crossorigin="anonymous"></script>
+        <script>
+            feather.replace()
+        </script>
+		-->		
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/bootstrap-slider.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js" crossorigin="anonymous"></script>
+
+		<!- Main form ->
+		<script type="text/javascript" src="js/main_form.js"></script>
+    </body>
 </html>

@@ -1,23 +1,72 @@
 <!DOCTYPE html>
-<html>   
-    <head>
-        <title>Moodlite</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-		<link href="css/main_ap_form.css" rel="stylesheet">
+<html>
+    <head>        
+    	<title>moodlite</title>
+		<!- Favicon ->
+		<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+		
+		<!- Meta data ->
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+        <META HTTP-EQUIV="refresh" CONTENT="300">
+
+        <!-- Style sheets -->
+		<!-- Bootstrap stylesheet -->
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+		
+		<!-- Main stylesheet -->
+		<link rel="stylesheet" href="css/main_ap_form.css"/>
     </head>
     <body>
-		<div id="h1-div">
-			<h1 id="toptitle">Moodlite</h1>
-		</div>     
-		<div id="form-main">    
-			<div id="form-div">      
-				<form class="form" action="/set_wifi" method="POST" id="wifi_form">
-					<input type="text" name="ssid" placeholder="SSID" value="" maxlength="20" size="20">
-					<input type="password" name="password" placeholder="Password" maxlength="20" size="20">
-					<input type="text" name="hostname" placeholder="Hostname" maxlength="20" size="20">
-					<input type="submit" value="Set" id="button-set">
-				</form>
-			</div>
-		</div>
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow"><a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">moodlite</a></nav>
+        <div class="container-fluid">
+            <div class="row">
+                <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+                	<ul class="nav nav-tabs d-flex flex-wrap flex-md-nowrap pt-5" id="pills-tab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="pill" href="#pills-leds" role="tab" aria-controls="pills-leds" aria-selected="true" id="pills-leds-tab" data-id="leds">Wifi configuration</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-leds" role="tabpanel" aria-labelledby="pills-leds-tab">
+							<h4 id="tile-patterns" class="mt-3"><span class="bd-content-title">Wifi settings</span></h4>
+							<form action="/set_wifi" method="POST" id="wifi_form">
+								<div class="form-group row">
+									<label for="ssid" class="col-sm-2 col-form-label">SSID</label>
+									<div class="col-sm-10">
+										<input type="text" id="ssid" name="ssid" class="form-control" value="" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="password" class="col-sm-2 col-form-label">Password</label>
+									<div class="col-sm-10">
+										<input type="password" id="password" name="password" placeholder="Password" class="form-control" value="" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="hostname" class="col-sm-2 col-form-label">Hostname</label>
+									<div class="col-sm-10">
+										<input type="text" id="hostname" name="hostname" class="form-control" value="" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group row">
+									<button type="submit" class="btn btn-secondary btn-lg btn-block" id="btnSetLedsSettingsProp" value="Set" >Save and restart</button>
+								</div>
+							</form>
+						</div>
+					</div>
+                </main>
+                <footer class="footer">
+   					<div class="container-fluid text-center">
+   						<span class="text-muted">
+  						    <p class="copyright">
+								Copyright © 2019 Shiryou (A.R.N.) and Spigot (M.V.). All Rights Reserved. This project is licensed under the GNU V3 License. This software may not be resold, redistributed or otherwise conveyed to a third party. Created for moodlite.
+   						    </p>
+   						</span>
+   					</div>
+				</footer>
+            </div>
+        </div>
+
+        <script src="js/bootstrap.min.js"</script>
     </body>
 </html>

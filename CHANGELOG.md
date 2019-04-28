@@ -2,6 +2,17 @@
 
 This document records all notable changes to Moodlite.
 
+## [3.0] - 2019-04-28
+### New
+- Tile/LED patterns
+- Web interface
+### Added
+- Tile/LED patterns switch
+- NTP settings	
+### Changed
+- WiFi password length (40 chars)
+- PIR (motion) sensor functions
+
 ## [2.0] - 2019-01-27
 ### Added
 - More color patterns
